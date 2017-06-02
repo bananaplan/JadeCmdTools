@@ -23,5 +23,6 @@ hs_err_pid*
 
 #custom file
 .idea/
-JadeCmdTools.iml
+*.iml
 META-INF/
+report/
