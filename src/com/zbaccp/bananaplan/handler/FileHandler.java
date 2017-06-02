@@ -7,10 +7,10 @@ import java.io.File;
  */
 public interface FileHandler {
     /**
-     * µİ¹é²éÕÒÎÄ¼şºó£¬»Øµ÷´¦Àí·½·¨
-     * @param destPath ÒªĞ´ÈëµÄÄ¿±êÎÄ¼ş¼Ğ
-     * @param master ÎÄ¼şµÄÖ÷ÈËĞÕÃû
-     * @param file µ±Ç°ÎÄ¼ş
+     * é€’å½’æŸ¥æ‰¾æ–‡ä»¶åï¼Œå›è°ƒå¤„ç†æ–¹æ³•
+     * @param destPath è¦å†™å…¥çš„ç›®æ ‡æ–‡ä»¶å¤¹
+     * @param master æ–‡ä»¶çš„ä¸»äººå§“å
+     * @param file å½“å‰æ–‡ä»¶
      */
     public void callback(String destPath, String master, File file);
 }

@@ -16,7 +16,7 @@ public class Application {
     private Scanner input = new Scanner(System.in);
 
     /**
-     * ÓÃÓÚ·ÖÎöÂ¼ÆÁºÍ×÷ÒµÃ»½»µÄHashMap
+     * ç”¨äºåˆ†æå½•å±å’Œä½œä¸šæ²¡äº¤çš„HashMap
      */
     private HashMap<String, String> videoMap = null;
     private HashMap<String, ArrayList<File>> videoSimilarMap = null;
@@ -34,10 +34,10 @@ public class Application {
         do {
             System.out.println();
             System.out.println("----------------------------------------");
-            System.out.println("1. Ñ¡Ôñ°à¼¶");
-            System.out.println("0. ÍË³ö³ÌĞò");
+            System.out.println("1. é€‰æ‹©ç­çº§");
+            System.out.println("0. é€€å‡ºç¨‹åº");
             System.out.println("----------------------------------------");
-            System.out.print("ÇëÑ¡Ôñ£º");
+            System.out.print("è¯·é€‰æ‹©ï¼š");
 
             try {
                 menuId = input.nextInt();
@@ -52,16 +52,16 @@ public class Application {
                         break;
 
                     default:
-                        System.out.println("²Ëµ¥Ñ¡Ôñ´íÎó£¬ÇëÖØĞÂÑ¡Ôñ");
+                        System.out.println("èœå•é€‰æ‹©é”™è¯¯ï¼Œè¯·é‡æ–°é€‰æ‹©");
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("ÇëÊäÈëÊı×Ö");
+                System.out.println("è¯·è¾“å…¥æ•°å­—");
                 input.next();
             }
         } while (isGoOn);
 
-        System.out.println("³ÌĞòÍË³ö...");
+        System.out.println("ç¨‹åºé€€å‡º...");
     }
 
     private void showClassList() {
@@ -80,10 +80,10 @@ public class Application {
                 }
             }
 
-            System.out.println(Config.CLASS_OTHER + ". ÆäËû°à¼¶");
-            System.out.println("0. ·µ»Ø");
+            System.out.println(Config.CLASS_OTHER + ". å…¶ä»–ç­çº§");
+            System.out.println("0. è¿”å›");
             System.out.println("----------------------------------------");
-            System.out.print("ÇëÑ¡Ôñ°à¼¶ĞòºÅ£º");
+            System.out.print("è¯·é€‰æ‹©ç­çº§åºå·ï¼š");
 
             try {
                 int menuId = input.nextInt();
@@ -96,10 +96,10 @@ public class Application {
                     Config.classIndex = Config.CLASS_OTHER;
                     showOptMenu();
                 } else {
-                    System.out.println("°à¼¶ĞòºÅÑ¡Ôñ´íÎó£¬ÇëÖØĞÂÑ¡Ôñ");
+                    System.out.println("ç­çº§åºå·é€‰æ‹©é”™è¯¯ï¼Œè¯·é‡æ–°é€‰æ‹©");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("ÇëÊäÈëÊı×Ö");
+                System.out.println("è¯·è¾“å…¥æ•°å­—");
                 input.next();
             }
 
@@ -114,15 +114,15 @@ public class Application {
             System.out.println("----------------------------------------");
 
             if (Config.classIndex != Config.CLASS_OTHER) {
-                System.out.println("1. ĞÒÔË³é½±");
-                System.out.println("2. ÉÏ»úÍê³ÉÇé¿ö");
+                System.out.println("1. å¹¸è¿æŠ½å¥–");
+                System.out.println("2. ä¸Šæœºå®Œæˆæƒ…å†µ");
             }
 
-            System.out.println("3. ×÷Òµ·ÖÎö");
-            System.out.println("4. ÕûÀíÑ§Ô±Ñ¡ÔñÌâ´ğ°¸");
-            System.out.println("0. ·µ»Ø");
+            System.out.println("3. ä½œä¸šåˆ†æ");
+            System.out.println("4. æ•´ç†å­¦å‘˜é€‰æ‹©é¢˜ç­”æ¡ˆ");
+            System.out.println("0. è¿”å›");
             System.out.println("----------------------------------------");
-            System.out.print("ÇëÑ¡Ôñ£º");
+            System.out.print("è¯·é€‰æ‹©ï¼š");
 
             try {
                 menuId = input.nextInt();
@@ -135,7 +135,7 @@ public class Application {
 
                 switch (menuId) {
                     case 0:
-                        System.out.println("·µ»ØÉÏÒ»¼¶");
+                        System.out.println("è¿”å›ä¸Šä¸€çº§");
                         break;
 
                     case 1:
@@ -155,11 +155,11 @@ public class Application {
                         break;
 
                     default:
-                        System.out.println("²Ëµ¥Ñ¡Ôñ´íÎó£¬ÇëÖØĞÂÑ¡Ôñ");
+                        System.out.println("èœå•é€‰æ‹©é”™è¯¯ï¼Œè¯·é‡æ–°é€‰æ‹©");
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("ÇëÊäÈëÊı×Ö");
+                System.out.println("è¯·è¾“å…¥æ•°å­—");
                 input.next();
             }
         } while (menuId != 0);
@@ -183,19 +183,19 @@ public class Application {
                     Student stu = list.get(index);
                     System.out.println("id: " + stu.id + ", name: " + stu.name);
 
-                    // ´ÓÑ§ÉúÊı×éÖĞÉ¾³ıÑ§Éú¶ÔÏó
+                    // ä»å­¦ç”Ÿæ•°ç»„ä¸­åˆ é™¤å­¦ç”Ÿå¯¹è±¡
                     Student.removeStudent(list, stu.id);
 
                     if (stuCount == 1) {
                         list = null;
-                        System.out.println("È«²¿³éÍê!");
+                        System.out.println("å…¨éƒ¨æŠ½å®Œ!");
                         break;
                     }
                 }
             }
 
             System.out.println();
-            System.out.print("ÊÇ·ñ¼ÌĞø£¿y/n£º");
+            System.out.print("æ˜¯å¦ç»§ç»­ï¼Ÿy/nï¼š");
             yes = input.next();
         } while (!yes.equals("n"));
 
@@ -209,7 +209,7 @@ public class Application {
             Scanner input = new Scanner(System.in);
 
             System.out.println();
-            System.out.print("ÇëÊäÈë±êÌâ£¨ÊäÈënÍË³ö£©£º");
+            System.out.print("è¯·è¾“å…¥æ ‡é¢˜ï¼ˆè¾“å…¥né€€å‡ºï¼‰ï¼š");
             title = input.nextLine();
 
             if (title != null && !title.equals("n")) {
@@ -220,7 +220,7 @@ public class Application {
                 do {
                     try {
                         System.out.println();
-                        System.out.print("ÇëÊäÈëÍê³ÉÉÏ»úµÄÑ§Ô±±àºÅ£¨ÊäÈë0ÍË³ö£©£º");
+                        System.out.print("è¯·è¾“å…¥å®Œæˆä¸Šæœºçš„å­¦å‘˜ç¼–å·ï¼ˆè¾“å…¥0é€€å‡ºï¼‰ï¼š");
                         stuId = input.nextInt();
 
                         if (stuId > 0) {
@@ -230,11 +230,11 @@ public class Application {
                                     break;
                                 }
                             } else {
-                                System.out.println("ÎŞ´ËÑ§Ô±");
+                                System.out.println("æ— æ­¤å­¦å‘˜");
                             }
                         }
                     } catch (InputMismatchException e) {
-                        System.out.println("ÇëÊäÈëÊı×Ö");
+                        System.out.println("è¯·è¾“å…¥æ•°å­—");
                         input.next();
                     }
 
@@ -251,7 +251,7 @@ public class Application {
 
         for (int i = 0; i < idArray.length; i++) {
             if (idArray[i] == stu.id) {
-                System.out.println(stu.name + " ÒÑÌá½»");
+                System.out.println(stu.name + " å·²æäº¤");
                 return false;
             }
         }
@@ -285,7 +285,7 @@ public class Application {
 
         try {
             if (isWriteTitle) {
-                fileUtil.writeLine("±àºÅ\tĞÕÃû\tÓÃÊ±\tÍê³ÉÊ±¼ä");
+                fileUtil.writeLine("ç¼–å·\tå§“å\tç”¨æ—¶\tå®Œæˆæ—¶é—´");
             }
 
             Date cur = new Date();
@@ -296,14 +296,14 @@ public class Application {
             df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time = df.format(cur);
 
-            fileUtil.writeLine(stu.id + "\t" + stu.name + "\t" + minutes + "·Ö" + seconds + "Ãë" + "\t" + time);
+            fileUtil.writeLine(stu.id + "\t" + stu.name + "\t" + minutes + "åˆ†" + seconds + "ç§’" + "\t" + time);
 
             for (int i = 0; i < idArray.length; i++) {
                 if (idArray[i] == 0) {
                     idArray[i] = stu.id;
 
                     if (i == Config.classStuList.size() - 1) {
-                        System.out.println("È«²¿Íê³É");
+                        System.out.println("å…¨éƒ¨å®Œæˆ");
                         return true;
                     }
 
@@ -327,10 +327,10 @@ public class Application {
     }
 
     /**
-     * ±à³Ì´óÈü£¬»ñÈ¡Î´Íê³ÉÑ§Ô±ĞÅÏ¢
+     * ç¼–ç¨‹å¤§èµ›ï¼Œè·å–æœªå®Œæˆå­¦å‘˜ä¿¡æ¯
      *
-     * @param idArray ÒÑÍê³ÉÑ§Ô±idÊı×é
-     * @return Æ´½ÓºóµÄ×Ö·û´®
+     * @param idArray å·²å®Œæˆå­¦å‘˜idæ•°ç»„
+     * @return æ‹¼æ¥åçš„å­—ç¬¦ä¸²
      */
     private String getUnfinished(int[] idArray) {
         StringBuffer sb = new StringBuffer();
@@ -348,29 +348,29 @@ public class Application {
                 }
 
                 if (!isFind) {
-                    sb.append(stu.id + "\t" + stu.name + "\tÎ´Íê³É\r\n");
+                    sb.append(stu.id + "\t" + stu.name + "\tæœªå®Œæˆ\r\n");
                 }
             }
         }
 
         if (sb.length() > 0) {
-            sb.insert(0, "±àºÅ\tĞÕÃû\t×´Ì¬\r\n");
+            sb.insert(0, "ç¼–å·\tå§“å\tçŠ¶æ€\r\n");
         }
 
         return sb.toString();
     }
 
     /**
-     * ×÷Òµ·ÖÎö
+     * ä½œä¸šåˆ†æ
      */
     private void homework() {
         Scanner input = new Scanner(System.in);
 
-        System.out.print("ÇëÊäÈë×÷ÒµËùÔÚµÄÂ·¾¶£º");
+        System.out.print("è¯·è¾“å…¥ä½œä¸šæ‰€åœ¨çš„è·¯å¾„ï¼š");
         String path = input.nextLine();
 
         if (path == null || path.equals("")) {
-            System.out.println("Â·¾¶²»ÄÜÎª¿Õ");
+            System.out.println("è·¯å¾„ä¸èƒ½ä¸ºç©º");
             return;
         }
 
@@ -378,11 +378,11 @@ public class Application {
 
         int masterDeepth = 0;
         if (Config.classIndex == Config.CLASS_OTHER) {
-            System.out.print("ÇëÊäÈëÒÔÑ§Ô±ĞÕÃûÃüÃûµÄÎÄ¼ş¼ĞµÄÉî¶È£¨Ä¬ÈÏÇëÊä0£©£º");
+            System.out.print("è¯·è¾“å…¥ä»¥å­¦å‘˜å§“åå‘½åçš„æ–‡ä»¶å¤¹çš„æ·±åº¦ï¼ˆé»˜è®¤è¯·è¾“0ï¼‰ï¼š");
             try {
                 masterDeepth = input.nextInt();
             } catch (InputMismatchException e) {
-                System.out.println("ÇëÊäÈëÊı×Ö");
+                System.out.println("è¯·è¾“å…¥æ•°å­—");
                 input.next();
                 return;
             }
@@ -401,7 +401,7 @@ public class Application {
         if (Config.classIndex != Config.CLASS_OTHER) {
             className = Config.classNameList.get(Config.classIndex);
         } else {
-            className = "ÆäËû°à¼¶";
+            className = "å…¶ä»–ç­çº§";
         }
 
         String destPath = "report/" + className + "/" + date;
@@ -415,20 +415,20 @@ public class Application {
         dfs(path, destPath, FileUtil.getDirName(path), masterDeepth, 0, homeworkHandler);
 //        bfs(path, destPath, masterDeepth, homeworkHandler);
 
-        // ·ÖÎöÂ¼ÆÁ£¬²¢½«½á¹ûĞ´ÈëÎÄ¼ş
+        // åˆ†æå½•å±ï¼Œå¹¶å°†ç»“æœå†™å…¥æ–‡ä»¶
         doVideoCheck(videoPath);
         videoMap = null;
         videoSimilarMap = null;
 
-        // ·ÖÎö×÷Òµ
+        // åˆ†æä½œä¸š
         doHomeworkCheck(homeworkPath);
         homeworkMap = null;
     }
 
     /**
-     * ¼ì²éÂ¼ÆÁ
+     * æ£€æŸ¥å½•å±
      *
-     * @param path ·ÖÎö½á¹û±£´æµÄÎÄ¼şÂ·¾¶
+     * @param path åˆ†æç»“æœä¿å­˜çš„æ–‡ä»¶è·¯å¾„
      */
     private void doVideoCheck(String path) {
         if (!videoMap.isEmpty()) {
@@ -444,7 +444,7 @@ public class Application {
 
             FileUtil fileUtil = new FileUtil(path, true);
 
-            // ¸ù¾İÂ¼ÆÁÎÄ¼şµÄ´óĞ¡½µĞòÅÅĞò
+            // æ ¹æ®å½•å±æ–‡ä»¶çš„å¤§å°é™åºæ’åº
             for (int i = 0; i < logs.length; i++) {
                 for (int j = 0; j < logs.length - 1 - i; j++) {
                     if (Integer.parseInt(logs[j][0]) > Integer.parseInt(logs[j + 1][0])) {
@@ -458,18 +458,18 @@ public class Application {
                 fileUtil.writeLine(logs[logs.length - 1 - i][1]);
             }
 
-            // ¼ì²éÃ»ÓĞÂ¼ÆÁµÄÑ§Ô±
+            // æ£€æŸ¥æ²¡æœ‰å½•å±çš„å­¦å‘˜
             if (Config.classIndex != Config.CLASS_OTHER) {
                 for (int i = 0; i < Config.classStuList.size(); i++) {
                     Student stu = Config.classStuList.get(i);
                     if (stu != null && videoMap.get(stu.name) == null) {
-                        System.out.println(stu.name + "\t" + "Ã»ÓĞÂ¼ÆÁ");
-                        fileUtil.writeLine(stu.name + "\t" + "Ã»ÓĞÂ¼ÆÁ");
+                        System.out.println(stu.name + "\t" + "æ²¡æœ‰å½•å±");
+                        fileUtil.writeLine(stu.name + "\t" + "æ²¡æœ‰å½•å±");
                     }
                 }
             }
 
-            // ¼ì²éÂ¼ÆÁ³­Ï®µÄÑ§Ô±
+            // æ£€æŸ¥å½•å±æŠ„è¢­çš„å­¦å‘˜
             ArrayList<String> list = walkSimilarFiles(videoSimilarMap);
 
             for (int i = 0; i < list.size(); i++) {
@@ -478,43 +478,43 @@ public class Application {
                 fileUtil.writeLine(result);
             }
 
-            System.out.println("\nĞ´ÈëÎÄ¼ş³É¹¦£º" + path + " -> ºÏ²¢ºóµÄ¼ÇÂ¼\n");
+            System.out.println("\nå†™å…¥æ–‡ä»¶æˆåŠŸï¼š" + path + " -> åˆå¹¶åçš„è®°å½•\n");
             fileUtil.close();
 
         } else {
-            System.out.println("Ã»ÓĞÕÒµ½Êı¾İ");
+            System.out.println("æ²¡æœ‰æ‰¾åˆ°æ•°æ®");
         }
     }
 
     /**
-     * ·ÖÎö×÷Òµ
+     * åˆ†æä½œä¸š
      *
-     * @param path ·ÖÎö½á¹û±£´æµÄÎÄ¼şÂ·¾¶
+     * @param path åˆ†æç»“æœä¿å­˜çš„æ–‡ä»¶è·¯å¾„
      */
     private void doHomeworkCheck(String path) {
         FileUtil fileUtil = new FileUtil(path, true);
 
-        // ¼ì²éÃ»ÓĞ×÷ÒµµÄÑ§Ô±
+        // æ£€æŸ¥æ²¡æœ‰ä½œä¸šçš„å­¦å‘˜
         if (Config.classIndex != Config.CLASS_OTHER) {
             for (int i = 0; i < Config.classStuList.size(); i++) {
                 Student stu = Config.classStuList.get(i);
                 if (stu != null && homeworkMap.get(stu.name) == null) {
-                    System.out.println(stu.name + "\t" + "Ã»½»×÷Òµ");
-                    fileUtil.writeLine(stu.name + "\t" + "Ã»½»×÷Òµ");
+                    System.out.println(stu.name + "\t" + "æ²¡äº¤ä½œä¸š");
+                    fileUtil.writeLine(stu.name + "\t" + "æ²¡äº¤ä½œä¸š");
                 }
             }
 
             System.out.println();
         }
 
-        // ´úÂëÏàËÆ¶È·ÖÎö
+        // ä»£ç ç›¸ä¼¼åº¦åˆ†æ
         ArrayList<String> list = walkSimilarFiles(homeworkMap);
 
         Collections.sort(list, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                int similar1 = Integer.parseInt(o1.substring(o1.lastIndexOf('£º') + 1));
-                int similar2 = Integer.parseInt(o2.substring(o2.lastIndexOf('£º') + 1));
+                int similar1 = Integer.parseInt(o1.substring(o1.lastIndexOf('ï¼š') + 1));
+                int similar2 = Integer.parseInt(o2.substring(o2.lastIndexOf('ï¼š') + 1));
                 if (similar1 > similar2) {
                     return -1;
                 } else if (similar1 < similar2) {
@@ -525,7 +525,7 @@ public class Application {
             }
         });
 
-        // ±éÀúÏàËÆ¶È·ÖÎö½á¹ûµÄlist
+        // éå†ç›¸ä¼¼åº¦åˆ†æç»“æœçš„list
         for (int i = 0; i < list.size(); i++) {
             String result = list.get(i);
             System.out.println(result);
@@ -533,12 +533,12 @@ public class Application {
         }
 
         System.out.println();
-        System.out.println("Ğ´ÈëÎÄ¼ş³É¹¦£º" + path);
+        System.out.println("å†™å…¥æ–‡ä»¶æˆåŠŸï¼š" + path);
         fileUtil.close();
     }
 
     /**
-     * ±éÀúmap£¬Á½Á½¼ì²éÎÄ¼şÏàËÆ¶È
+     * éå†mapï¼Œä¸¤ä¸¤æ£€æŸ¥æ–‡ä»¶ç›¸ä¼¼åº¦
      * @param map
      * @return
      */
@@ -570,13 +570,13 @@ public class Application {
     }
 
     /**
-     * ¼ì²é´úÂëÏàËÆ¶È
+     * æ£€æŸ¥ä»£ç ç›¸ä¼¼åº¦
      *
-     * @param master1 Ñ§Ô±ĞÕÃû
-     * @param list1   µÚÒ»¸ö´úÂëÑù±¾¼¯ºÏ
-     * @param master2 Ñ§Ô±ĞÕÃû
-     * @param list2   µÚ¶ş¸ö´úÂëÑù±¾¼¯ºÏ
-     * @return ´úÂëÏàËÆ¶È½á¹û¼¯
+     * @param master1 å­¦å‘˜å§“å
+     * @param list1   ç¬¬ä¸€ä¸ªä»£ç æ ·æœ¬é›†åˆ
+     * @param master2 å­¦å‘˜å§“å
+     * @param list2   ç¬¬äºŒä¸ªä»£ç æ ·æœ¬é›†åˆ
+     * @return ä»£ç ç›¸ä¼¼åº¦ç»“æœé›†
      */
     private ArrayList<String> checkSimilar(String master1, ArrayList<File> list1, String master2, ArrayList<File> list2) {
         ArrayList<String> list = new ArrayList<String>();
@@ -617,7 +617,7 @@ public class Application {
                             } else if (content1Tidy.equalsIgnoreCase(content2Tidy)) {
                                 similar += 85;
                             } else {
-                                // ÏàËÆ¶È·ÖÎö
+                                // ç›¸ä¼¼åº¦åˆ†æ
                                 similar += analysis.check(content1, content2);
                             }
                         }
@@ -625,7 +625,7 @@ public class Application {
                 }
 
                 if (similar >= 60) {
-                    list.add(master1 + "£º" + file1.getName() + "  <->  " + master2 + "£º" + file2.getName() + "£¬ÏàËÆ¶È£º" + similar);
+                    list.add(master1 + "ï¼š" + file1.getName() + "  <->  " + master2 + "ï¼š" + file2.getName() + "ï¼Œç›¸ä¼¼åº¦ï¼š" + similar);
                 }
             }
         }
@@ -634,17 +634,17 @@ public class Application {
     }
 
     /**
-     * ÌáÈ¡Ñ¡ÔñÌâ´ğ°¸
+     * æå–é€‰æ‹©é¢˜ç­”æ¡ˆ
      */
     private void extractSelectAnswer() {
         Scanner input = new Scanner(System.in);
 
-        System.out.print("ÇëÊäÈëÎÄ¼ş¼ĞËùÔÚÂ·¾¶£º");
+        System.out.print("è¯·è¾“å…¥æ–‡ä»¶å¤¹æ‰€åœ¨è·¯å¾„ï¼š");
         String path = input.nextLine();
 
         int masterDeepth = 0;
         if (Config.classIndex == Config.CLASS_OTHER) {
-            System.out.print("ÇëÊäÈëÒÔÑ§Ô±ĞÕÃûÃüÃûµÄÎÄ¼ş¼ĞµÄÉî¶È£¨Ä¬ÈÏÇëÊä0£©£º");
+            System.out.print("è¯·è¾“å…¥ä»¥å­¦å‘˜å§“åå‘½åçš„æ–‡ä»¶å¤¹çš„æ·±åº¦ï¼ˆé»˜è®¤è¯·è¾“0ï¼‰ï¼š");
             masterDeepth = input.nextInt();
         }
 
@@ -653,10 +653,10 @@ public class Application {
     }
 
     /**
-     * ÊÇ·ñÔÚÎÄ¼şÀ©Õ¹ÃûºòÑ¡ÁĞ±íÖĞ
-     * @param name ÎÄ¼şÃû»òÀ©Õ¹Ãû
-     * @param type 0£ºÔ´ÂëÎÄ¼ş£¬1£ºÊÓÆµÎÄ¼ş
-     * @return ÊÇ·ñÆ¥Åä
+     * æ˜¯å¦åœ¨æ–‡ä»¶æ‰©å±•åå€™é€‰åˆ—è¡¨ä¸­
+     * @param name æ–‡ä»¶åæˆ–æ‰©å±•å
+     * @param type 0ï¼šæºç æ–‡ä»¶ï¼Œ1ï¼šè§†é¢‘æ–‡ä»¶
+     * @return æ˜¯å¦åŒ¹é…
      */
     private boolean inExtList(String name, int type) {
         if (name == null || name.equals("")) {
@@ -691,7 +691,7 @@ public class Application {
     }
 
     /**
-     * Â¼ÆÁºÍ×÷Òµ·ÖÎöµÄ»Øµ÷
+     * å½•å±å’Œä½œä¸šåˆ†æçš„å›è°ƒ
      */
     private FileHandler homeworkHandler = new FileHandler() {
         @Override
@@ -715,7 +715,7 @@ public class Application {
                 map = videoSimilarMap;
 
             } else if (inExtList(fileName, 0)) {
-                // ÅÅ³ı C# ÏîÄ¿µÄ bin¡¢obj¡¢Properties ÎÄ¼ş¼ĞÄÚµÄÎÄ¼ş
+                // æ’é™¤ C# é¡¹ç›®çš„ binã€objã€Properties æ–‡ä»¶å¤¹å†…çš„æ–‡ä»¶
                 if (fileName.endsWith(".cs") || fileName.endsWith(".txt")) {
                     if (file.getParentFile().getParent().replace("\\", "/").endsWith("/bin") || file.getParentFile().getParent().replace("\\", "/").endsWith("/obj") || file.getParent().replace("\\", "/").endsWith("/Properties")) {
                         return;
@@ -744,7 +744,7 @@ public class Application {
     };
 
     /**
-     * ÌáÈ¡Ñ§Ô±Ñ¡ÔñÌâ´ğ°¸µÄexcelµ½Ñ§Ô±´ğ°¸ÎÄ¼ş¼ĞµÄ»Øµ÷
+     * æå–å­¦å‘˜é€‰æ‹©é¢˜ç­”æ¡ˆçš„excelåˆ°å­¦å‘˜ç­”æ¡ˆæ–‡ä»¶å¤¹çš„å›è°ƒ
      */
     private FileHandler copySelectAnswerHandler = new FileHandler() {
         @Override
@@ -752,7 +752,7 @@ public class Application {
             String fileName = file.getName();
             if (fileName.endsWith(".xls") || fileName.endsWith(".xlsx")) {
                 String fileExt = fileName.substring(fileName.lastIndexOf('.'));
-                destPath = destPath + "/Ñ§Ô±´ğ°¸";
+                destPath = destPath + "/å­¦å‘˜ç­”æ¡ˆ";
 
                 File dest = new File(destPath);
                 if (!dest.exists()) {
@@ -765,20 +765,20 @@ public class Application {
                 dest = new File(destPath);
                 FileUtil.copyFile(file, dest);
 
-                System.out.println("Ğ´ÈëÎÄ¼ş³É¹¦£º" + destPath);
+                System.out.println("å†™å…¥æ–‡ä»¶æˆåŠŸï¼š" + destPath);
             }
         }
     };
 
     /**
-     * Éî¶ÈÓÅÏÈ±éÀúÎÄ¼ş
+     * æ·±åº¦ä¼˜å…ˆéå†æ–‡ä»¶
      *
-     * @param path         ÎÄ¼ş¼ĞÂ·¾¶
-     * @param destPath     ÒªĞ´ÈëµÄÄ¿±êÎÄ¼ş¼ĞÂ·¾¶£¬ÓÃ²»µ½£¬¿ÉÎªnull
-     * @param master       µ±Ç°ÎÄ¼şµÄÖ÷ÈËĞÕÃû
-     * @param masterDeepth °üº¬Ö÷ÈËĞÕÃûµÄÎÄ¼ş¼ĞµÄÉî¶È
-     * @param curDeepth    µ±Ç°ÎÄ¼ş¼ĞµÄÉî¶È
-     * @param handler      »Øµ÷´¦ÀíÎÄ¼ş¶ÔÏó
+     * @param path         æ–‡ä»¶å¤¹è·¯å¾„
+     * @param destPath     è¦å†™å…¥çš„ç›®æ ‡æ–‡ä»¶å¤¹è·¯å¾„ï¼Œç”¨ä¸åˆ°ï¼Œå¯ä¸ºnull
+     * @param master       å½“å‰æ–‡ä»¶çš„ä¸»äººå§“å
+     * @param masterDeepth åŒ…å«ä¸»äººå§“åçš„æ–‡ä»¶å¤¹çš„æ·±åº¦
+     * @param curDeepth    å½“å‰æ–‡ä»¶å¤¹çš„æ·±åº¦
+     * @param handler      å›è°ƒå¤„ç†æ–‡ä»¶å¯¹è±¡
      */
     private void dfs(String path, String destPath, String master, int masterDeepth, int curDeepth, FileHandler handler) {
         if (path == null || path.equals("")) {
@@ -831,11 +831,11 @@ public class Application {
     }
 
     /**
-     * ¹ã¶ÈÓÅÏÈ±éÀúÎÄ¼ş
+     * å¹¿åº¦ä¼˜å…ˆéå†æ–‡ä»¶
      *
-     * @param path         ÎÄ¼ş¼ĞÂ·¾¶
-     * @param masterDeepth °üº¬Ö÷ÈËĞÕÃûµÄÎÄ¼ş¼ĞµÄÉî¶È
-     * @param handler      »Øµ÷´¦ÀíÎÄ¼ş¶ÔÏó
+     * @param path         æ–‡ä»¶å¤¹è·¯å¾„
+     * @param masterDeepth åŒ…å«ä¸»äººå§“åçš„æ–‡ä»¶å¤¹çš„æ·±åº¦
+     * @param handler      å›è°ƒå¤„ç†æ–‡ä»¶å¯¹è±¡
      */
     private void bfs(String path, String destPath, int masterDeepth, FileHandler handler) {
         if (path == null || path.equals("")) {

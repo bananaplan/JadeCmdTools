@@ -179,10 +179,10 @@ public class FileUtil {
     }
 
     /**
-     * ¸´ÖÆÎÄ¼ş
+     * å¤åˆ¶æ–‡ä»¶
      *
-     * @param source Ô´ÎÄ¼ş
-     * @param dest   Ä¿±êÎÄ¼ş
+     * @param source æºæ–‡ä»¶
+     * @param dest   ç›®æ ‡æ–‡ä»¶
      */
     public static void copyFile(File source, File dest) {
         FileChannel inputChannel = null;

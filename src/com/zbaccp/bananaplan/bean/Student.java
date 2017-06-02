@@ -32,12 +32,12 @@ public class Student {
     }
 
     /**
-     * ¸ù¾İĞÕÃû²éÑ¯Ñ§Éú
+     * æ ¹æ®å§“åæŸ¥è¯¢å­¦ç”Ÿ
      *
-     * @param list       Ñ§ÉúÊı×é
-     * @param name       Òª²éÑ¯µÄÑ§ÉúĞÕÃû
-     * @param equalsType Æ¥Åä·½Ê½£º0£¬¾«È·Æ¥Åä 1£¬µ¥Ä£ºıÆ¥Åä 2£¬Ë«Ä£ºıÆ¥Åä
-     * @return Ñ§Éú¶ÔÏó
+     * @param list       å­¦ç”Ÿæ•°ç»„
+     * @param name       è¦æŸ¥è¯¢çš„å­¦ç”Ÿå§“å
+     * @param equalsType åŒ¹é…æ–¹å¼ï¼š0ï¼Œç²¾ç¡®åŒ¹é… 1ï¼Œå•æ¨¡ç³ŠåŒ¹é… 2ï¼ŒåŒæ¨¡ç³ŠåŒ¹é…
+     * @return å­¦ç”Ÿå¯¹è±¡
      */
     public static Student getStudent(ArrayList<Student> list, String name, int equalsType) {
         if (list != null && name != null && !name.equals("")) {
