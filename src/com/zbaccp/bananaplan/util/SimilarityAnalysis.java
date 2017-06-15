@@ -1,5 +1,6 @@
 package com.zbaccp.bananaplan.util;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,19 @@ public class SimilarityAnalysis {
 
         content1 = text1;
         content2 = text2;
+
+        System.out.println(content1);
+        try {
+            System.out.println(content1.equals(new String(content1.getBytes("utf-8"), "utf-8")));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println(content2);
+        try {
+            System.out.println(content2.equals(new String(content2.getBytes("utf-8"), "utf-8")));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         String content1Tidy = tidy(text1);
         String content2Tidy = tidy(text2);

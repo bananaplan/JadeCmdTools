@@ -624,7 +624,7 @@ public class Application {
                     }
                 }
 
-                if (similar >= 60) {
+                if (similar >= 0) {
                     list.add(master1 + "：" + file1.getName() + "  <->  " + master2 + "：" + file2.getName() + "，相似度：" + similar);
                 }
             }

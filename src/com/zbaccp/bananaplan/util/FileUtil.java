@@ -1,5 +1,7 @@
 package com.zbaccp.bananaplan.util;
 
+import info.monitorenter.cpdetector.io.*;
+
 import java.io.*;
 import java.nio.channels.FileChannel;
 
@@ -45,10 +47,13 @@ public class FileUtil {
             return null;
         }
 
-        String dirPath = filePath.substring(0, filePath.lastIndexOf('/'));
-        File dir = new File(dirPath);
-        if (!dir.exists()) {
-            dir.mkdirs();
+        int index = filePath.lastIndexOf('/');
+        if (index != -1) {
+            String dirPath = filePath.substring(0, index);
+            File dir = new File(dirPath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
         }
 
         File file = new File(filePath);
@@ -252,12 +257,61 @@ public class FileUtil {
 
         String content = null;
         try {
-            content = new String(data, "gbk");
+            String encoding = detectEcoding(path);
+
+            if (encoding == null) {
+                encoding = "utf-8";
+            }
+
+            content = new String(data, encoding);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
         return content;
+    }
+
+    /**
+     * 检测文件字符编码
+     * @param path 文件路径
+     * @return 字符编码
+     */
+    public static String detectEcoding(String path) {
+        // Create the proxy:
+        CodepageDetectorProxy detector = CodepageDetectorProxy.getInstance(); // A singleton.
+
+        // Add the implementations of info.monitorenter.cpdetector.io.ICodepageDetector:
+        // This one is quick if we deal with unicode codepages:
+        detector.add(new ByteOrderMarkDetector());
+        // The first instance delegated to tries to detect the meta charset attribut in html pages.
+        detector.add(new ParsingDetector(false)); // be verbose about parsing.
+        // This one does the tricks of exclusion and frequency detection, if first implementation is
+        // unsuccessful:
+        detector.add(JChardetFacade.getInstance()); // Another singleton.
+        detector.add(ASCIIDetector.getInstance()); // Fallback, see javadoc.
+
+        File file = new File(path);
+
+        // Work with the configured proxy:
+        java.nio.charset.Charset charset = null;
+        try {
+            charset = detector.detectCodepage(file.toURL());
+        } catch (IOException e) {
+            return null;
+        }
+
+        if (charset != null) {
+            // Open the document in the given code page:
+//            try {
+//                Reader reader = new InputStreamReader(new FileInputStream(file), charset);
+//            } catch (FileNotFoundException e) {
+//                return null;
+//            }
+
+            return charset.name();
+        }
+
+        return null;
     }
 
 }
