@@ -23,6 +23,7 @@ public class Application {
     private HashMap<String, ArrayList<File>> homeworkMap = null;
 
     public void run() {
+        Config.init();
         showMainMenu();
     }
 

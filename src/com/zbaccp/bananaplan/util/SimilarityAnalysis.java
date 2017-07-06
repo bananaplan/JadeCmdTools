@@ -8,16 +8,9 @@ import java.util.Map;
  * Created by wangbin on 2017/4/9.
  */
 public class SimilarityAnalysis {
-    private String content1;
-    private String content2;
 
     public SimilarityAnalysis() {
 
-    }
-
-    public SimilarityAnalysis(String text1, String text2) {
-        content1 = text1;
-        content2 = text2;
     }
 
     public String tidy(String text) {
@@ -26,22 +19,6 @@ public class SimilarityAnalysis {
 
     public int check(String text1, String text2) {
         int similar = 0;
-
-        content1 = text1;
-        content2 = text2;
-
-        System.out.println(content1);
-        try {
-            System.out.println(content1.equals(new String(content1.getBytes("utf-8"), "utf-8")));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        System.out.println(content2);
-        try {
-            System.out.println(content2.equals(new String(content2.getBytes("utf-8"), "utf-8")));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
         String content1Tidy = tidy(text1);
         String content2Tidy = tidy(text2);
