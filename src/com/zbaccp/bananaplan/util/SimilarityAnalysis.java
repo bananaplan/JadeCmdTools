@@ -24,9 +24,9 @@ public class SimilarityAnalysis {
         String content2Tidy = tidy(text2);
 
         if (content1Tidy.equals(content2Tidy)) {
-            similar += 80;
+            similar += 92;
         } else if (content1Tidy.equalsIgnoreCase(content2Tidy)) {
-            similar += 75;
+            similar += 90;
         } else {
             similar += calcSimilarWords(content1Tidy.split(" "), content2Tidy.split(" "));
         }
@@ -51,7 +51,7 @@ public class SimilarityAnalysis {
 //        System.out.println(words1.length + " - " + words2.length);
 //        System.out.println(words1.length + words2.length - sameCount);
 
-        return (int) ((double) sameCount / (words1.length + words2.length) * 0.75 * 100);
+        return (int) ((double) sameCount / (words1.length + words2.length) * 0.9 * 100);
     }
 
     private HashMap<String, Integer> calcSameWordCount(String[] words) {

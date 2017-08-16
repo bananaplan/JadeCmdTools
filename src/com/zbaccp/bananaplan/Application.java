@@ -432,6 +432,8 @@ public class Application {
      * @param path 分析结果保存的文件路径
      */
     private void doVideoCheck(String path) {
+        System.out.println("\n正在分析录屏...");
+
         if (!videoMap.isEmpty()) {
             int index = 0;
             String[][] logs = new String[videoMap.size()][];
@@ -493,6 +495,8 @@ public class Application {
      * @param path 分析结果保存的文件路径
      */
     private void doHomeworkCheck(String path) {
+        System.out.println("\n正在分析作业，可能耗时较长，请耐心等待...");
+
         FileUtil fileUtil = new FileUtil(path, true);
 
         // 检查没有作业的学员
@@ -603,20 +607,29 @@ public class Application {
                         String content1 = FileUtil.readAll(file1.getAbsolutePath());
                         String content2 = FileUtil.readAll(file2.getAbsolutePath());
 
+                        // 过滤 UTF-8 with BOM 编码文件开头的一个字符
+                        if (content1.charAt(0) == '\uFEFF') {
+                            content1 = content1.substring(1);
+                        }
+
+                        if (content2.charAt(0) == '\uFEFF') {
+                            content2 = content2.substring(1);
+                        }
+
                         if (content1.equals(content2)) {
                             similar += 100;
                         } else if (content1.equalsIgnoreCase(content2)) {
-                            similar += 95;
+                            similar += 98;
                         }
 
-                        if (similar < 95) {
+                        if (similar < 98) {
                             String content1Tidy = content1.replaceAll("\\r|\\n|\\s", "");
                             String content2Tidy = content2.replaceAll("\\r|\\n|\\s", "");
 
                             if (content1Tidy.equals(content2Tidy)) {
-                                similar += 90;
+                                similar += 96;
                             } else if (content1Tidy.equalsIgnoreCase(content2Tidy)) {
-                                similar += 85;
+                                similar += 94;
                             } else {
                                 // 相似度分析
                                 similar += analysis.check(content1, content2);
@@ -625,7 +638,7 @@ public class Application {
                     }
                 }
 
-                if (similar >= 0) {
+                if (similar >= 75) {
                     list.add(master1 + "：" + file1.getName() + "  <->  " + master2 + "：" + file2.getName() + "，相似度：" + similar);
                 }
             }
