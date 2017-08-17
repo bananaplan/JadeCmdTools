@@ -1,6 +1,5 @@
 package com.zbaccp.bananaplan.util;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
