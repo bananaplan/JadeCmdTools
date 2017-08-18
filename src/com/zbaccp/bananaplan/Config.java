@@ -7,7 +7,7 @@ import com.zbaccp.bananaplan.bean.Student;
 import com.zbaccp.bananaplan.util.FileUtil;
 
 public class Config {
-    public final static int CLASS_OTHER = 9;
+    public final static int CLASS_OTHER = 99;
 
     public final static String[] VIDEO_EXT_LIST = {".lxe"};
     public final static String[] CODE_EXT_INCLUDE_LIST = {".java", ".cs", ".html", ".htm", ".txt"};
