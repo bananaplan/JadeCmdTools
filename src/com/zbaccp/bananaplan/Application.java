@@ -495,50 +495,55 @@ public class Application {
      *
      * @param path 分析结果保存的文件路径
      */
-    private void doHomeworkCheck(String path) {
+    private ArrayList<TheSame> doHomeworkCheck(String path) {
         System.out.println("\n正在分析作业，可能耗时较长，请耐心等待...");
 
         FileUtil fileUtil = new FileUtil(path, true);
 
-        // 检查没有作业的学员
-        if (Config.classIndex != Config.CLASS_OTHER) {
-            for (int i = 0; i < Config.classStuList.size(); i++) {
-                Student stu = Config.classStuList.get(i);
-                if (stu != null && homeworkMap.get(stu.name) == null) {
-                    System.out.println(stu.name + "\t" + "没交作业");
-                    fileUtil.writeLine(stu.name + "\t" + "没交作业");
+        try {
+            // 检查没有作业的学员
+            if (Config.classIndex != Config.CLASS_OTHER) {
+                for (int i = 0; i < Config.classStuList.size(); i++) {
+                    Student stu = Config.classStuList.get(i);
+                    if (stu != null && homeworkMap.get(stu.name) == null) {
+                        System.out.println(stu.name + "\t" + "没交作业");
+                        fileUtil.writeLine(stu.name + "\t" + "没交作业");
+                    }
                 }
+
+                System.out.println();
+            }
+
+            // 代码相似度分析
+            ArrayList<TheSame> list = walkSimilarFiles(homeworkMap);
+
+            Collections.sort(list, new Comparator<TheSame>() {
+                @Override
+                public int compare(TheSame o1, TheSame o2) {
+                    if (o1.similar > o2.similar) {
+                        return -1;
+                    } else if (o1.similar < o2.similar) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+
+            // 遍历相似度分析结果的list
+            for (int i = 0; i < list.size(); i++) {
+                TheSame same = list.get(i);
+                System.out.println(same.toString());
+                fileUtil.writeLine(same.toString());
             }
 
             System.out.println();
+            System.out.println("写入文件成功：" + path);
+
+            return list;
+        } finally {
+            fileUtil.close();
         }
-
-        // 代码相似度分析
-        ArrayList<TheSame> list = walkSimilarFiles(homeworkMap);
-
-        Collections.sort(list, new Comparator<TheSame>() {
-            @Override
-            public int compare(TheSame o1, TheSame o2) {
-                if (o1.similar > o2.similar) {
-                    return -1;
-                } else if (o1.similar < o2.similar) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-
-        // 遍历相似度分析结果的list
-        for (int i = 0; i < list.size(); i++) {
-            TheSame same = list.get(i);
-            System.out.println(same.toString());
-            fileUtil.writeLine(same.toString());
-        }
-
-        System.out.println();
-        System.out.println("写入文件成功：" + path);
-        fileUtil.close();
     }
 
     /**
