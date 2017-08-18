@@ -12,7 +12,17 @@ public class TheSame {
     public File master2File;
     public int similar;
 
+    public TheSame(String master1, File master1File, String master2, File master2File, int similar) {
+        this.master1 = master1;
+        this.master1File = master1File;
+
+        this.master2 = master2;
+        this.master2File = master2File;
+
+        this.similar = similar;
+    }
+
     public String toString() {
-        return master1 + "：" + master1File.getName() + "  <->  " + master2 + "：" + master2File.getName() + "，相似度：" + similar;
+        return master1 + " : " + master1File.getName() + "  <->  " + master2 + " : " + master2File.getName() + "，相似度: " + similar;
     }
 }

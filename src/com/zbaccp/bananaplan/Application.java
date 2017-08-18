@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.zbaccp.bananaplan.bean.Student;
+import com.zbaccp.bananaplan.bean.TheSame;
 import com.zbaccp.bananaplan.handler.FileHandler;
 import com.zbaccp.bananaplan.util.FileUtil;
 import com.zbaccp.bananaplan.util.SimilarityAnalysis;
@@ -473,12 +474,12 @@ public class Application {
             }
 
             // 检查录屏抄袭的学员
-            ArrayList<String> list = walkSimilarFiles(videoSimilarMap);
+            ArrayList<TheSame> list = walkSimilarFiles(videoSimilarMap);
 
             for (int i = 0; i < list.size(); i++) {
-                String result = list.get(i);
-                System.out.println(result);
-                fileUtil.writeLine(result);
+                TheSame same = list.get(i);
+                System.out.println(same.toString());
+                fileUtil.writeLine(same.toString());
             }
 
             System.out.println("\n写入文件成功：" + path + " -> 合并后的记录\n");
@@ -513,16 +514,14 @@ public class Application {
         }
 
         // 代码相似度分析
-        ArrayList<String> list = walkSimilarFiles(homeworkMap);
+        ArrayList<TheSame> list = walkSimilarFiles(homeworkMap);
 
-        Collections.sort(list, new Comparator<String>() {
+        Collections.sort(list, new Comparator<TheSame>() {
             @Override
-            public int compare(String o1, String o2) {
-                int similar1 = Integer.parseInt(o1.substring(o1.lastIndexOf('：') + 1));
-                int similar2 = Integer.parseInt(o2.substring(o2.lastIndexOf('：') + 1));
-                if (similar1 > similar2) {
+            public int compare(TheSame o1, TheSame o2) {
+                if (o1.similar > o2.similar) {
                     return -1;
-                } else if (similar1 < similar2) {
+                } else if (o1.similar < o2.similar) {
                     return 1;
                 } else {
                     return 0;
@@ -532,9 +531,9 @@ public class Application {
 
         // 遍历相似度分析结果的list
         for (int i = 0; i < list.size(); i++) {
-            String result = list.get(i);
-            System.out.println(result);
-            fileUtil.writeLine(result);
+            TheSame same = list.get(i);
+            System.out.println(same.toString());
+            fileUtil.writeLine(same.toString());
         }
 
         System.out.println();
@@ -547,8 +546,8 @@ public class Application {
      * @param map
      * @return
      */
-    private ArrayList<String> walkSimilarFiles(HashMap<String, ArrayList<File>> map) {
-        ArrayList<String> list = new ArrayList<String>();
+    private ArrayList<TheSame> walkSimilarFiles(HashMap<String, ArrayList<File>> map) {
+        ArrayList<TheSame> list = new ArrayList<TheSame>();
 
         Iterator<Map.Entry<String, ArrayList<File>>> it1 = map.entrySet().iterator();
         while (it1.hasNext()) {
@@ -561,7 +560,7 @@ public class Application {
                 String master2 = entry2.getKey();
 
                 if (!master.equals(master2)) {
-                    ArrayList<String> resultList = checkSimilar(master, entry1.getValue(), master2, entry2.getValue());
+                    ArrayList<TheSame> resultList = checkSimilar(master, entry1.getValue(), master2, entry2.getValue());
                     if (resultList != null && !resultList.isEmpty()) {
                         list.addAll(resultList);
                     }
@@ -583,8 +582,8 @@ public class Application {
      * @param list2   第二个代码样本集合
      * @return 代码相似度结果集
      */
-    private ArrayList<String> checkSimilar(String master1, ArrayList<File> list1, String master2, ArrayList<File> list2) {
-        ArrayList<String> list = new ArrayList<String>();
+    private ArrayList<TheSame> checkSimilar(String master1, ArrayList<File> list1, String master2, ArrayList<File> list2) {
+        ArrayList<TheSame> list = new ArrayList<TheSame>();
         SimilarityAnalysis analysis = new SimilarityAnalysis();
 
         for (int i = 0; i < list1.size(); i++) {
@@ -639,7 +638,7 @@ public class Application {
                 }
 
                 if (similar >= 75) {
-                    list.add(master1 + "：" + file1.getName() + "  <->  " + master2 + "：" + file2.getName() + "，相似度：" + similar);
+                    list.add(new TheSame(master1, file1, master2, file2, similar));
                 }
             }
         }
