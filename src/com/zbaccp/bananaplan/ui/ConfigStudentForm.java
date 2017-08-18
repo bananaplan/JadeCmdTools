@@ -30,7 +30,9 @@ public class ConfigStudentForm {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    if (ConfigStudentForm.this.cboClassName.getSelectedIndex() > 0) {
+                    int index = ConfigStudentForm.this.cboClassName.getSelectedIndex();
+
+                    if (index > 0) {
                         String className = ConfigStudentForm.this.cboClassName.getSelectedItem().toString();
 
                         String path = "config/" + className + ".txt";
@@ -39,6 +41,10 @@ public class ConfigStudentForm {
                         if (content != null) {
                             ConfigStudentForm.this.txtSutdentList.setText(content);
                         } else {
+                            ConfigStudentForm.this.txtSutdentList.setText("");
+                        }
+                    } else {
+                        if (index == 0) {
                             ConfigStudentForm.this.txtSutdentList.setText("");
                         }
                     }
@@ -107,9 +113,17 @@ public class ConfigStudentForm {
                 this.cboClassName.addItem(name);
             }
         }
+
+        if (ClassSelectForm.instance != null) {
+            ClassSelectForm.instance.loadClassList(false);
+        }
     }
 
     public static void show() {
+        if (frame != null) {
+            frame.dispose();
+        }
+
         frame = new JFrame("设置班级和学员信息");
         frame.setContentPane(new ConfigStudentForm().panelMain);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

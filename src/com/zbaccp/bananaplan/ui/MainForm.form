@@ -102,6 +102,12 @@
                   </component>
                 </children>
               </grid>
+              <component id="75102" class="javax.swing.JMenuItem" binding="menuItemExit">
+                <constraints/>
+                <properties>
+                  <text value="Exit"/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>

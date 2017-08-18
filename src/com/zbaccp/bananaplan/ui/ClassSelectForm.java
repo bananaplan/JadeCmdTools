@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
  * Created by bananaplan on 2017/8/17.
  */
 public class ClassSelectForm {
+    public static ClassSelectForm instance;
     private static JFrame frame;
 
     private JPanel panelMain;
@@ -17,7 +18,8 @@ public class ClassSelectForm {
     private JButton btnOk;
 
     public ClassSelectForm() {
-        loadClassList();
+        instance = this;
+        loadClassList(true);
 
         btnOk.addActionListener(new ActionListener() {
             @Override
@@ -27,8 +29,10 @@ public class ClassSelectForm {
 
                     if (ClassSelectForm.this.cboClassName.getSelectedItem().toString().equals("其他班级")) {
                         Config.classIndex = Config.CLASS_OTHER;
+                        MainForm.setMenuEnabled(false);
                     } else {
                         Config.initStudentList(index);
+                        MainForm.setMenuEnabled(true);
                     }
 
                     ClassSelectForm.frame.dispose();
@@ -37,14 +41,21 @@ public class ClassSelectForm {
         });
     }
 
-    private void loadClassList() {
-        Config.init();
-        this.cboClassName.removeAllItems();
+    public void loadClassList(boolean reloadConfig) {
+        if (reloadConfig) {
+            Config.init();
+        }
 
+        this.cboClassName.removeAllItems();
         this.cboClassName.addItem("请选择班级");
+
         if (Config.classNameList != null) {
-            for (String name : Config.classNameList) {
-                this.cboClassName.addItem(name);
+            for (int i = 0; i < Config.classNameList.size(); i++) {
+                this.cboClassName.addItem(Config.classNameList.get(i));
+
+                if (Config.classIndex == i) {
+                    this.cboClassName.setSelectedIndex(i + 1);
+                }
             }
         }
 

@@ -22,6 +22,12 @@ public class LuckyForm {
         btnLucky.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (Config.classIndex == Config.CLASS_OTHER) {
+                    JOptionPane.showMessageDialog(null, "请先选择班级(其他班级除外)", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    ClassSelectForm.show();
+                    return;
+                }
+
                 btnLucky.setEnabled(false);
 
                 if (Student.list == null) {
