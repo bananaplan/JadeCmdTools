@@ -237,6 +237,11 @@ public class FileUtil {
 
     public static String readAll(String path) {
         File file = new File(path);
+        if (!file.exists() || !file.isFile()) {
+            System.out.println("文件不存在，或者不是文件");
+            return null;
+        }
+
         byte[] data = new byte[(int) file.length()];
 
         FileInputStream fis = null;
