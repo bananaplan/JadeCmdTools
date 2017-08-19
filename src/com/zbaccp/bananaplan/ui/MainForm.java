@@ -1,5 +1,6 @@
 package com.zbaccp.bananaplan.ui;
 
+import com.zbaccp.bananaplan.Application;
 import com.zbaccp.bananaplan.Config;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.awt.event.ActionListener;
 public class MainForm {
     public static MainForm instance;
     public static JFrame frame;
+    public static Application app;
 
     private JPanel panelMain;
     private JPanel panelMenu;
@@ -32,7 +34,7 @@ public class MainForm {
 
     public MainForm() {
         instance = this;
-        Config.init();
+        app = new Application();
 
         menuItemLucky.addActionListener(new ActionListener() {
             @Override

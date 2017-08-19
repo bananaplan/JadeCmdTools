@@ -1,6 +1,9 @@
 package com.zbaccp.bananaplan.ui;
 
+import com.zbaccp.bananaplan.Config;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -12,24 +15,39 @@ public class HomeworkForm {
     private static JFrame frame;
 
     private JPanel panelMain;
-    private JButton button1;
+    private JTextField txtPath;
+    private JButton btnSelect;
+    private JTextField txtDepth;
+    private JButton btnStart;
+    private JLabel lblDepth;
 
     public HomeworkForm() {
+        if (Config.classIndex == Config.CLASS_OTHER) {
+            this.lblDepth.setForeground(Color.GRAY);
+            this.txtDepth.setEnabled(false);
+        }
 
-        button1.addActionListener(new ActionListener() {
+        btnSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser jfc = new JFileChooser();
+                jfc.setSelectedFile(new File("F:\\work\\学员作业\\0216S1\\作业和录屏\\2017-03-22"));
                 jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 jfc.showDialog(new JLabel(), "选择");
                 File file = jfc.getSelectedFile();
                 if (file != null) {
                     if (file.isDirectory()) {
-                        System.out.println("文件夹:" + file.getAbsolutePath());
+                        HomeworkForm.this.txtPath.setText(file.getAbsolutePath());
                     } else if (file.isFile()) {
                         System.out.println("文件:" + file.getAbsolutePath());
                     }
                 }
+            }
+        });
+        btnStart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
