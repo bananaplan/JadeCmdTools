@@ -589,6 +589,15 @@ public class Application {
         for (int i = 0; i < list1.size(); i++) {
             File file1 = list1.get(i);
 
+            String content1 = null;
+            if (inExtList(file1.getName(), 0)) {
+                content1 = FileUtil.readAll(file1.getAbsolutePath());
+
+                if (content1 == null || content1.length() == 0) {
+                    continue;
+                }
+            }
+
             for (int j = 0; j < list2.size(); j++) {
                 File file2 = list2.get(j);
 
@@ -601,10 +610,12 @@ public class Application {
                     similar += 100;
                 }
 
-                if (inExtList(file1.getName(), 0) && inExtList(file2.getName(), 0)) {
+                if (inExtList(file2.getName(), 0)) {
                     if (similar < 100) {
-                        String content1 = FileUtil.readAll(file1.getAbsolutePath());
                         String content2 = FileUtil.readAll(file2.getAbsolutePath());
+                        if (content2 == null || content2.length() == 0) {
+                            continue;
+                        }
 
                         // 过滤 UTF-8 with BOM 编码文件开头的一个字符
                         if (content1.charAt(0) == '\uFEFF') {
