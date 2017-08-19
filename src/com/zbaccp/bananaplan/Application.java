@@ -23,8 +23,11 @@ public class Application {
     private HashMap<String, ArrayList<File>> videoSimilarMap = null;
     private HashMap<String, ArrayList<File>> homeworkMap = null;
 
-    public void run() {
+    public Application() {
         Config.init();
+    }
+
+    public void run() {
         showMainMenu();
     }
 
@@ -91,11 +94,11 @@ public class Application {
                 int menuId = input.nextInt();
                 if (menuId == 0) {
                     isGoOn = false;
-                } else if (menuId <= Config.classNameList.size()) {
-                    Config.initStudentList(menuId - 1);
-                    showOptMenu();
                 } else if (menuId == Config.CLASS_OTHER) {
                     Config.classIndex = Config.CLASS_OTHER;
+                    showOptMenu();
+                } else if (menuId <= Config.classNameList.size()) {
+                    Config.initStudentList(menuId - 1);
                     showOptMenu();
                 } else {
                     System.out.println("班级序号选择错误，请重新选择");
@@ -548,11 +551,13 @@ public class Application {
 
     /**
      * 遍历map，两两检查文件相似度
+     *
      * @param map
      * @return
      */
     private ArrayList<TheSame> walkSimilarFiles(HashMap<String, ArrayList<File>> map) {
         ArrayList<TheSame> list = new ArrayList<TheSame>();
+        SimilarityAnalysis analysis = new SimilarityAnalysis();
 
         Iterator<Map.Entry<String, ArrayList<File>>> it1 = map.entrySet().iterator();
         while (it1.hasNext()) {
@@ -565,7 +570,7 @@ public class Application {
                 String master2 = entry2.getKey();
 
                 if (!master.equals(master2)) {
-                    ArrayList<TheSame> resultList = checkSimilar(master, entry1.getValue(), master2, entry2.getValue());
+                    ArrayList<TheSame> resultList = analysis.checkFilesSimilar(master, entry1.getValue(), master2, entry2.getValue());
                     if (resultList != null && !resultList.isEmpty()) {
                         list.addAll(resultList);
                     }
@@ -573,90 +578,6 @@ public class Application {
             }
 
             it1.remove();
-        }
-
-        return list;
-    }
-
-    /**
-     * 检查代码相似度
-     *
-     * @param master1 学员姓名
-     * @param list1   第一个代码样本集合
-     * @param master2 学员姓名
-     * @param list2   第二个代码样本集合
-     * @return 代码相似度结果集
-     */
-    private ArrayList<TheSame> checkSimilar(String master1, ArrayList<File> list1, String master2, ArrayList<File> list2) {
-        ArrayList<TheSame> list = new ArrayList<TheSame>();
-        SimilarityAnalysis analysis = new SimilarityAnalysis();
-
-        for (int i = 0; i < list1.size(); i++) {
-            File file1 = list1.get(i);
-
-            String content1 = null;
-            if (inExtList(file1.getName(), 0)) {
-                content1 = FileUtil.readAll(file1.getAbsolutePath());
-
-                if (content1 == null || content1.length() == 0) {
-                    continue;
-                }
-            }
-
-            for (int j = 0; j < list2.size(); j++) {
-                File file2 = list2.get(j);
-
-                int similar = 0;
-                if (file1.getName().equals(file2.getName())) {
-                    similar += 5;
-                }
-
-                if (file1.lastModified() == file2.lastModified()) {
-                    similar += 100;
-                }
-
-                if (inExtList(file2.getName(), 0)) {
-                    if (similar < 100) {
-                        String content2 = FileUtil.readAll(file2.getAbsolutePath());
-                        if (content2 == null || content2.length() == 0) {
-                            continue;
-                        }
-
-                        // 过滤 UTF-8 with BOM 编码文件开头的一个字符
-                        if (content1.charAt(0) == '\uFEFF') {
-                            content1 = content1.substring(1);
-                        }
-
-                        if (content2.charAt(0) == '\uFEFF') {
-                            content2 = content2.substring(1);
-                        }
-
-                        if (content1.equals(content2)) {
-                            similar += 100;
-                        } else if (content1.equalsIgnoreCase(content2)) {
-                            similar += 98;
-                        }
-
-                        if (similar < 98) {
-                            String content1Tidy = content1.replaceAll("\\r|\\n|\\s", "");
-                            String content2Tidy = content2.replaceAll("\\r|\\n|\\s", "");
-
-                            if (content1Tidy.equals(content2Tidy)) {
-                                similar += 96;
-                            } else if (content1Tidy.equalsIgnoreCase(content2Tidy)) {
-                                similar += 94;
-                            } else {
-                                // 相似度分析
-                                similar += analysis.check(content1, content2);
-                            }
-                        }
-                    }
-                }
-
-                if (similar >= 75) {
-                    list.add(new TheSame(master1, file1, master2, file2, similar));
-                }
-            }
         }
 
         return list;
@@ -682,44 +603,6 @@ public class Application {
     }
 
     /**
-     * 是否在文件扩展名候选列表中
-     * @param name 文件名或扩展名
-     * @param type 0：源码文件，1：视频文件
-     * @return 是否匹配
-     */
-    private boolean inExtList(String name, int type) {
-        if (name == null || name.equals("")) {
-            return false;
-        }
-
-        int index = name.lastIndexOf('.');
-        if (index == -1) {
-            return false;
-        }
-
-        String ext = name.substring(index);
-
-        String[] extList = null;
-
-        switch (type) {
-            case 1:
-                extList = Config.VIDEO_EXT_LIST;
-                break;
-            default:
-                extList = Config.CODE_EXT_INCLUDE_LIST;
-                break;
-        }
-
-        for (int i = 0; i < extList.length; i++) {
-            if (ext.trim().equalsIgnoreCase(extList[i])) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * 录屏和作业分析的回调
      */
     private FileHandler homeworkHandler = new FileHandler() {
@@ -728,7 +611,7 @@ public class Application {
             String fileName = file.getName();
             HashMap<String, ArrayList<File>> map = null;
 
-            if (inExtList(fileName, 1)) {
+            if (Config.inExtList(fileName, 1)) {
                 int fileSize = (int) (file.length() / 1024 / 1024);
                 String fileModifiedTime = new SimpleDateFormat("MM-dd HH:mm:ss").format(new Date(file.lastModified()));
                 String fileDetail = file.getName() + " [" + fileModifiedTime + " " + fileSize + "MB" + "]";
@@ -743,7 +626,7 @@ public class Application {
 
                 map = videoSimilarMap;
 
-            } else if (inExtList(fileName, 0)) {
+            } else if (Config.inExtList(fileName, 0)) {
                 // 排除 C# 项目的 bin、obj、Properties 文件夹内的文件
                 if (fileName.endsWith(".cs") || fileName.endsWith(".txt")) {
                     if (file.getParentFile().getParent().replace("\\", "/").endsWith("/bin") || file.getParentFile().getParent().replace("\\", "/").endsWith("/obj") || file.getParent().replace("\\", "/").endsWith("/Properties")) {

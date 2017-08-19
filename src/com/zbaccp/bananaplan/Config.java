@@ -7,7 +7,7 @@ import com.zbaccp.bananaplan.bean.Student;
 import com.zbaccp.bananaplan.util.FileUtil;
 
 public class Config {
-    public final static int CLASS_OTHER = 99;
+    public final static int CLASS_OTHER = -1;
 
     public final static String[] VIDEO_EXT_LIST = {".lxe"};
     public final static String[] CODE_EXT_INCLUDE_LIST = {".java", ".cs", ".html", ".htm", ".txt"};
@@ -66,5 +66,43 @@ public class Config {
         } finally {
             fileUtil.close();
         }
+    }
+
+    /**
+     * 是否在文件扩展名候选列表中
+     * @param name 文件名或扩展名
+     * @param type 0：源码文件，1：视频文件
+     * @return 是否匹配
+     */
+    public static boolean inExtList(String name, int type) {
+        if (name == null || name.equals("")) {
+            return false;
+        }
+
+        int index = name.lastIndexOf('.');
+        if (index == -1) {
+            return false;
+        }
+
+        String ext = name.substring(index);
+
+        String[] extList = null;
+
+        switch (type) {
+            case 1:
+                extList = Config.VIDEO_EXT_LIST;
+                break;
+            default:
+                extList = Config.CODE_EXT_INCLUDE_LIST;
+                break;
+        }
+
+        for (int i = 0; i < extList.length; i++) {
+            if (ext.trim().equalsIgnoreCase(extList[i])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
