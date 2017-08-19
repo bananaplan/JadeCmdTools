@@ -393,6 +393,10 @@ public class Application {
             }
         }
 
+        homeworkAnalysis(path, masterDeepth);
+    }
+
+    public ArrayList<TheSame> homeworkAnalysis(String path, int masterDeepth) {
         String date = null;
         Pattern p = Pattern.compile("\\d{4}\\-\\d{2}\\-\\d{2}");
         Matcher m = p.matcher(path);
@@ -426,8 +430,10 @@ public class Application {
         videoSimilarMap = null;
 
         // 分析作业
-        doHomeworkCheck(homeworkPath);
+        ArrayList<TheSame> list = doHomeworkCheck(homeworkPath);
         homeworkMap = null;
+
+        return list;
     }
 
     /**
