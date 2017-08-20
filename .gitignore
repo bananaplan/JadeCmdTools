@@ -22,8 +22,10 @@
 hs_err_pid*
 
 #custom file
+.DS_STORE
 .idea/
 *.iml
 META-INF/
 out/
+config/
 report/
