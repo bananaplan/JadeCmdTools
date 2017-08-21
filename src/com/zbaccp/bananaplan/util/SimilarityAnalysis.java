@@ -14,7 +14,6 @@ import java.util.Map;
 public class SimilarityAnalysis {
 
     public SimilarityAnalysis() {
-
     }
 
     public String tidy(String text) {
@@ -36,12 +35,9 @@ public class SimilarityAnalysis {
         for (int i = 0; i < list1.size(); i++) {
             File file1 = list1.get(i);
 
-            String content1 = null;
-            if (Config.inExtList(file1.getName(), 0)) {
-                content1 = FileUtil.readAll(file1.getAbsolutePath());
-                if (content1 == null || content1.length() == 0) {
-                    continue;
-                }
+            String content1 = FileUtil.readAll(file1.getAbsolutePath());
+            if (content1 == null || content1.length() == 0) {
+                continue;
             }
 
             for (int j = 0; j < list2.size(); j++) {
@@ -56,40 +52,38 @@ public class SimilarityAnalysis {
                     similar += 100;
                 }
 
-                if (Config.inExtList(file2.getName(), 0)) {
-                    if (similar < 100) {
-                        String content2 = FileUtil.readAll(file2.getAbsolutePath());
-                        if (content2 == null || content2.length() == 0) {
-                            continue;
-                        }
+                if (similar < 100) {
+                    String content2 = FileUtil.readAll(file2.getAbsolutePath());
+                    if (content2 == null || content2.length() == 0) {
+                        continue;
+                    }
 
-                        // 过滤 UTF-8 with BOM 编码文件开头的一个字符
-                        if (content1.charAt(0) == '\uFEFF') {
-                            content1 = content1.substring(1);
-                        }
+                    // 过滤 UTF-8 with BOM 编码文件开头的一个字符
+                    if (content1.charAt(0) == '\uFEFF') {
+                        content1 = content1.substring(1);
+                    }
 
-                        if (content2.charAt(0) == '\uFEFF') {
-                            content2 = content2.substring(1);
-                        }
+                    if (content2.charAt(0) == '\uFEFF') {
+                        content2 = content2.substring(1);
+                    }
 
-                        if (content1.equals(content2)) {
-                            similar += 100;
-                        } else if (content1.equalsIgnoreCase(content2)) {
-                            similar += 98;
-                        }
+                    if (content1.equals(content2)) {
+                        similar += 100;
+                    } else if (content1.equalsIgnoreCase(content2)) {
+                        similar += 98;
+                    }
 
-                        if (similar < 98) {
-                            String content1Tidy = content1.replaceAll("\\r|\\n|\\s", "");
-                            String content2Tidy = content2.replaceAll("\\r|\\n|\\s", "");
+                    if (similar < 98) {
+                        String content1Tidy = content1.replaceAll("\\r|\\n|\\s", "");
+                        String content2Tidy = content2.replaceAll("\\r|\\n|\\s", "");
 
-                            if (content1Tidy.equals(content2Tidy)) {
-                                similar += 96;
-                            } else if (content1Tidy.equalsIgnoreCase(content2Tidy)) {
-                                similar += 94;
-                            } else {
-                                // 相似度分析
-                                similar += checkTextSimilar(content1, content2);
-                            }
+                        if (content1Tidy.equals(content2Tidy)) {
+                            similar += 96;
+                        } else if (content1Tidy.equalsIgnoreCase(content2Tidy)) {
+                            similar += 94;
+                        } else {
+                            // 相似度分析
+                            similar += checkTextSimilar(content1, content2);
                         }
                     }
                 }
