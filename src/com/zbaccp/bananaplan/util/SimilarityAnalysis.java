@@ -14,7 +14,6 @@ import java.util.Map;
 public class SimilarityAnalysis {
 
     public SimilarityAnalysis() {
-
     }
 
     public String tidy(String text) {
