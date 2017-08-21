@@ -7,7 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +19,9 @@ import java.util.ArrayList;
 public class HomeworkForm {
     private static JFrame frame;
 
+    private ArrayList<TheSame> list;
+    private DefaultListModel listModel;
+
     private JPanel panelMain;
     private JTextField txtPath;
     private JButton btnSelect;
@@ -23,6 +29,8 @@ public class HomeworkForm {
     private JButton btnStart;
     private JLabel lblDepth;
     private JList lsResult;
+    private JButton btnShowDiff;
+    private JTextField txtExclude;
 
     public HomeworkForm() {
         if (Config.classIndex != Config.CLASS_OTHER) {
@@ -41,8 +49,6 @@ public class HomeworkForm {
                 if (file != null) {
                     if (file.isDirectory()) {
                         HomeworkForm.this.txtPath.setText(file.getAbsolutePath());
-                    } else if (file.isFile()) {
-                        System.out.println("文件:" + file.getAbsolutePath());
                     }
                 }
             }
@@ -75,11 +81,52 @@ public class HomeworkForm {
                 }
 
                 path = path.replace('\\', '/');
-                ArrayList<TheSame> list = MainForm.app.homeworkAnalysis(path, masterDepth);
+                list = MainForm.app.homeworkAnalysis(path, masterDepth);
 
+                // set the result list to JList component
+                if (listModel == null) {
+                    listModel = new DefaultListModel();
+                }
 
+                for (TheSame same : list) {
+                    listModel.addElement(same.toString());
+                }
+
+                lsResult.setModel(listModel);
             }
         });
+
+        btnShowDiff.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showDiff();
+            }
+        });
+
+        lsResult.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    showDiff();
+                }
+            }
+        });
+    }
+
+    private void showDiff() {
+        int index = lsResult.getSelectedIndex();
+
+        if (index == -1) {
+            JOptionPane.showMessageDialog(null, "请选择分析结果列表中的记录", "提示", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        try {
+            TheSame same = list.get(index);
+            Runtime.getRuntime().exec("java -jar lib/JMeld-2.1.jar \"" + same.master1File.getAbsolutePath() + "\" \"" + same.master2File.getAbsolutePath() + "\"");
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     public static void show() {
@@ -90,7 +137,7 @@ public class HomeworkForm {
         frame = new JFrame("作业分析");
         frame.setContentPane(new HomeworkForm().panelMain);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.setSize(600, 400);
+        frame.setSize(720, 560);
         frame.setLocationRelativeTo(MainForm.frame);
         frame.setVisible(true);
     }

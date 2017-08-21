@@ -78,7 +78,7 @@ public class MainForm {
         frame.setContentPane(new MainForm().panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setSize(800, 600);
+        frame.setSize(960, 680);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
