@@ -3,6 +3,7 @@ package com.zbaccp.bananaplan.ui;
 import com.zbaccp.bananaplan.Application;
 import com.zbaccp.bananaplan.Config;
 import com.zbaccp.bananaplan.handler.FileHandler;
+import com.zbaccp.bananaplan.util.FileUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -86,17 +87,51 @@ public class MainForm {
     }
 
     private void checkUpgrade() {
-        String url = "https://raw.githubusercontent.com/bananaplan/JadeCmdTools/master/Changelog.txt";
-        String filename = "Changelog.txt";
+        System.out.println("check upgrade ...");
 
-        download(url, filename, new FileHandler() {
-            @Override
-            public void callback(String destPath, String master, File file) {
-                System.out.println(file.getName());
-            }
-        });
+        String logUrl = "https://raw.githubusercontent.com/bananaplan/JadeCmdTools/dev/Changelog.txt";
+        String logFileName = "Changelog.txt";
 
+        startDownload(logUrl, logFileName, logHandler);
     }
+
+    private FileHandler logHandler = new FileHandler() {
+        @Override
+        public void callback(String destPath, String master, File file) {
+            String name = file.getName();
+
+            FileUtil fileUtil = new FileUtil(name);
+            fileUtil.write(FileUtil.readAll(name).replace("\n", "\r\n"), false);
+            fileUtil.close();
+
+            String log = FileUtil.readAll(name);
+            String firstLine = log.substring(0, log.indexOf('\r'));
+
+            try {
+                double version = Double.parseDouble(firstLine.substring(firstLine.indexOf(':') + 1));
+
+                if (version > Config.VERSION) {
+                    JOptionPane.showMessageDialog(null, "发现新版本, Version: " + version + ", 准备开始下载更新", "提示", JOptionPane.INFORMATION_MESSAGE);
+
+                    String jarUrl = "https://github.com/bananaplan/JadeCmdTools/blob/dev/JadeCmdTools-1.1.jar?raw=true";
+                    final String jarFileName = jarUrl.substring(jarUrl.lastIndexOf('/') + 1, jarUrl.lastIndexOf('?'));
+
+                    startDownload(jarUrl, jarFileName, new FileHandler() {
+                        @Override
+                        public void callback(String destPath, String master, File file) {
+                            FileUtil fileUtil = new FileUtil("run.bat");
+                            fileUtil.write("java -jar " + jarFileName + "\r\npause", false);
+                            fileUtil.close();
+
+                            JOptionPane.showMessageDialog(null, "更新完成，请重新启动程序", "提示", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     private class Download implements Runnable {
         private String url;
@@ -112,21 +147,28 @@ public class MainForm {
         @Override
         public void run() {
             BufferedInputStream in = null;
-            FileOutputStream fout = null;
+            FileOutputStream fos = null;
 
             try {
                 in = new BufferedInputStream(new URL(url).openStream());
-                fout = new FileOutputStream(filename);
+                fos = new FileOutputStream(filename);
 
                 int count;
                 final byte data[] = new byte[1024];
 
                 while ((count = in.read(data, 0, 1024)) != -1) {
-                    fout.write(data, 0, count);
+                    fos.write(data, 0, count);
                 }
+
+                handler.callback(null, null, new File(filename));
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 if (in != null) {
@@ -136,18 +178,20 @@ public class MainForm {
                         e.printStackTrace();
                     }
                 }
-                if (fout != null) {
+                if (fos != null) {
                     try {
-                        fout.close();
+                        fos.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
-    };
+    }
 
-    private void download(String url, String filename, FileHandler handler) {
+    ;
+
+    private void startDownload(String url, String filename, FileHandler handler) {
         new Thread(new Download(url, filename, handler)).start();
     }
 
