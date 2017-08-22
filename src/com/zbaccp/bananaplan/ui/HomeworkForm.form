@@ -180,7 +180,7 @@
             </constraints>
             <properties>
               <foreground color="-10066330"/>
-              <text value="(多个关键字用逗号分隔)"/>
+              <text value="(多个关键字用空格分隔)"/>
             </properties>
           </component>
         </children>

@@ -30,32 +30,33 @@ public class ConfigStudentForm {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    int index = ConfigStudentForm.this.cboClassName.getSelectedIndex();
+                    int index = cboClassName.getSelectedIndex();
 
                     if (index > 0) {
-                        String className = ConfigStudentForm.this.cboClassName.getSelectedItem().toString();
+                        String className = cboClassName.getSelectedItem().toString();
 
                         String path = "config/" + className + ".txt";
                         String content = FileUtil.readAll(path);
 
                         if (content != null) {
-                            ConfigStudentForm.this.txtSutdentList.setText(content);
+                            txtSutdentList.setText(content);
                         } else {
-                            ConfigStudentForm.this.txtSutdentList.setText("");
+                            txtSutdentList.setText("");
                         }
                     } else {
                         if (index == 0) {
-                            ConfigStudentForm.this.txtSutdentList.setText("");
+                            txtSutdentList.setText("");
                         }
                     }
                 }
             }
         });
+
         btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String className = ConfigStudentForm.this.cboClassName.getSelectedItem().toString();
-                String content = ConfigStudentForm.this.txtSutdentList.getText();
+                String className = cboClassName.getSelectedItem().toString();
+                String content = txtSutdentList.getText();
 
                 if (className.equals("") || content.equals("")) {
                     JOptionPane.showMessageDialog(null, "请设置班级名称和学生列表信息", "提示", JOptionPane.INFORMATION_MESSAGE);
@@ -77,22 +78,29 @@ public class ConfigStudentForm {
                 }
             }
         });
+
         btnCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ConfigStudentForm.frame.dispose();
             }
         });
+
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (cboClassName.getSelectedIndex() == 0) {
+                    JOptionPane.showMessageDialog(null, "请选择要删除的班级", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+
                 if (JOptionPane.showConfirmDialog(null, "确定要删除吗？", "确认",
                         JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
-                    String className = ConfigStudentForm.this.cboClassName.getSelectedItem().toString();
+                    String className = cboClassName.getSelectedItem().toString();
                     String path = "config/" + className + ".txt";
 
                     if (FileUtil.delete(path)) {
-                        ConfigStudentForm.this.txtSutdentList.setText("");
+                        txtSutdentList.setText("");
                         loadClassList();
                         JOptionPane.showMessageDialog(null, "删除成功", "提示", JOptionPane.INFORMATION_MESSAGE);
                     } else {

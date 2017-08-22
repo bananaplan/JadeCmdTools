@@ -42,58 +42,14 @@ public class HomeworkForm {
         btnSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser jfc = new JFileChooser();
-                jfc.setSelectedFile(new File("F:\\work\\学员作业\\0216S1\\作业和录屏\\2017-03-22"));
-                jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                jfc.showDialog(new JLabel(), "选择");
-                File file = jfc.getSelectedFile();
-                if (file != null) {
-                    if (file.isDirectory()) {
-                        HomeworkForm.this.txtPath.setText(file.getAbsolutePath());
-                    }
-                }
+                showFileChooser();
             }
         });
 
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String path = HomeworkForm.this.txtPath.getText();
-                String depth = HomeworkForm.this.txtDepth.getText();
-                int masterDepth = 0;
-
-                if (path == null || path.equals("")) {
-                    JOptionPane.showMessageDialog(null, "请选择作业目录", "提示", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-
-                if (Config.classIndex == Config.CLASS_OTHER) {
-                    if (depth == null || depth.equals("")) {
-                        JOptionPane.showMessageDialog(null, "请输入学员文件夹的目录深度", "提示", JOptionPane.INFORMATION_MESSAGE);
-                        return;
-                    } else {
-                        try {
-                            masterDepth = Integer.parseInt(depth);
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(null, "目录深度必须为数字", "提示", JOptionPane.INFORMATION_MESSAGE);
-                            return;
-                        }
-                    }
-                }
-
-                path = path.replace('\\', '/');
-                list = MainForm.app.homeworkAnalysis(path, masterDepth);
-
-                // set the result list to JList component
-                if (listModel == null) {
-                    listModel = new DefaultListModel();
-                }
-
-                for (TheSame same : list) {
-                    listModel.addElement(same.toString());
-                }
-
-                lsResult.setModel(listModel);
+                startAnalysis();
             }
         });
 
@@ -119,6 +75,62 @@ public class HomeworkForm {
                 showDiff(true);
             }
         });
+    }
+
+    private void showFileChooser() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.showDialog(new JLabel(), "选择");
+        File file = chooser.getSelectedFile();
+        if (file != null) {
+            if (file.isDirectory()) {
+                txtPath.setText(file.getAbsolutePath());
+            }
+        }
+    }
+
+    private void startAnalysis() {
+        String path = txtPath.getText();
+        String depth = txtDepth.getText();
+        int masterDepth = 0;
+
+        if (path == null || path.equals("")) {
+            JOptionPane.showMessageDialog(null, "请选择作业目录", "提示", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (Config.classIndex == Config.CLASS_OTHER) {
+            if (depth == null || depth.equals("")) {
+                JOptionPane.showMessageDialog(null, "请输入学员文件夹的目录深度", "提示", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            } else {
+                try {
+                    masterDepth = Integer.parseInt(depth);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "目录深度必须为数字", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+            }
+        }
+
+        String exclude = txtExclude.getText();
+        if (!exclude.equals("")) {
+            String[] list = exclude.split("\\s+");
+            for (int i = 0; i < list.length; i++) {
+                Config.CODE_EXCLUDE_LIST.add(list[i]);
+            }
+        }
+
+        list = MainForm.app.homeworkAnalysis(path, masterDepth);
+
+        // set the result list to JList component
+        listModel = new DefaultListModel();
+
+        for (TheSame same : list) {
+            listModel.addElement(same.toString());
+        }
+
+        lsResult.setModel(listModel);
     }
 
     private void showDiff(boolean useInnerDiff) {
