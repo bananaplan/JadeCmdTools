@@ -131,6 +131,7 @@ public class HomeworkForm {
         }
 
         lsResult.setModel(listModel);
+        Config.initIEList();
     }
 
     private void showDiff(boolean useInnerDiff) {

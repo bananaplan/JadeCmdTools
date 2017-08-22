@@ -24,7 +24,7 @@ public class Application {
     private HashMap<String, ArrayList<File>> homeworkMap = null;
 
     public Application() {
-        Config.init();
+        Config.initIEList();
     }
 
     public void run() {

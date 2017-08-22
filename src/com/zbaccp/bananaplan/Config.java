@@ -20,21 +20,6 @@ public class Config {
 
     public static int classIndex = CLASS_OTHER;
 
-    static {
-        VIDEO_EXT_LIST.add(".lxe");
-
-        CODE_EXT_INCLUDE_LIST.add(".java");
-        CODE_EXT_INCLUDE_LIST.add(".cs");
-        CODE_EXT_INCLUDE_LIST.add(".html");
-        CODE_EXT_INCLUDE_LIST.add(".htm");
-        CODE_EXT_INCLUDE_LIST.add(".txt");
-
-        CODE_EXCLUDE_LIST.add("bin");
-        CODE_EXCLUDE_LIST.add("obj");
-        CODE_EXCLUDE_LIST.add("Properties");
-//        CODE_EXCLUDE_LIST.add(".Designer.cs");
-    }
-
     public static void init() {
         File dir = new File("config");
         if (dir.exists() && dir.isDirectory()) {
@@ -85,5 +70,21 @@ public class Config {
         }
     }
 
+    public static void initIEList() {
+        VIDEO_EXT_LIST.clear();
+        VIDEO_EXT_LIST.add(".lxe");
 
+        CODE_EXT_INCLUDE_LIST.clear();
+        CODE_EXT_INCLUDE_LIST.add(".java");
+        CODE_EXT_INCLUDE_LIST.add(".cs");
+        CODE_EXT_INCLUDE_LIST.add(".html");
+        CODE_EXT_INCLUDE_LIST.add(".htm");
+        CODE_EXT_INCLUDE_LIST.add(".txt");
+
+        CODE_EXCLUDE_LIST.clear();
+        CODE_EXCLUDE_LIST.add("bin");
+        CODE_EXCLUDE_LIST.add("obj");
+        CODE_EXCLUDE_LIST.add("Properties");
+        CODE_EXCLUDE_LIST.add(".Designer.cs");
+    }
 }
