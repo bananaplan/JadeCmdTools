@@ -24,10 +24,10 @@ public class ClassSelectForm {
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (ClassSelectForm.this.cboClassName.getSelectedIndex() > 0) {
-                    int index = ClassSelectForm.this.cboClassName.getSelectedIndex() - 1;
+                if (cboClassName.getSelectedIndex() > 0) {
+                    int index = cboClassName.getSelectedIndex() - 1;
 
-                    if (ClassSelectForm.this.cboClassName.getSelectedItem().toString().equals("其他班级")) {
+                    if (cboClassName.getSelectedItem().toString().equals("其他班级")) {
                         Config.classIndex = Config.CLASS_OTHER;
                         MainForm.setMenuEnabled(false);
                     } else {

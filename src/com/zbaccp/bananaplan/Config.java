@@ -7,6 +7,8 @@ import com.zbaccp.bananaplan.bean.Student;
 import com.zbaccp.bananaplan.util.FileUtil;
 
 public class Config {
+    public final static double VERSION = 1.0;
+
     public final static int CLASS_OTHER = -1;
 
     public final static ArrayList<String> VIDEO_EXT_LIST = new ArrayList<String>();
@@ -30,7 +32,7 @@ public class Config {
         CODE_EXCLUDE_LIST.add("bin");
         CODE_EXCLUDE_LIST.add("obj");
         CODE_EXCLUDE_LIST.add("Properties");
-        CODE_EXCLUDE_LIST.add(".Designer.cs");
+//        CODE_EXCLUDE_LIST.add(".Designer.cs");
     }
 
     public static void init() {
