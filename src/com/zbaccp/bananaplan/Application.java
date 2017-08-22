@@ -379,8 +379,6 @@ public class Application {
             return;
         }
 
-        path = path.replace('\\', '/');
-
         int masterDeepth = 0;
         if (Config.classIndex == Config.CLASS_OTHER) {
             System.out.print("请输入以学员姓名命名的文件夹的深度（默认请输0）：");
@@ -397,6 +395,8 @@ public class Application {
     }
 
     public ArrayList<TheSame> homeworkAnalysis(String path, int masterDeepth) {
+        path = path.replace('\\', '/');
+
         String date = null;
         Pattern p = Pattern.compile("\\d{4}\\-\\d{2}\\-\\d{2}");
         Matcher m = p.matcher(path);
@@ -608,16 +608,53 @@ public class Application {
         bfs(path, path, masterDeepth, copySelectAnswerHandler);
     }
 
+
+    private boolean inExtList(File file) {
+        if (file == null || !file.exists()) {
+            return false;
+        }
+
+        String name = file.getName();
+
+        for (int i = 0; i < Config.CODE_EXCLUDE_LIST.size(); i++) {
+            String exclude = Config.CODE_EXCLUDE_LIST.get(i);
+
+            if (file.isDirectory()) {
+                if (name.equalsIgnoreCase(exclude)) {
+                    return false;
+                }
+            } else {
+                if (exclude.indexOf(".") != -1 && name.toLowerCase().indexOf(exclude.toLowerCase()) != -1) {
+                    return false;
+                }
+            }
+        }
+
+        if (file.isFile()) {
+            String ext = name.substring(name.lastIndexOf('.'));
+
+            for (int i = 0; i < Config.CODE_EXT_INCLUDE_LIST.size(); i++) {
+                if (ext.equalsIgnoreCase(Config.CODE_EXT_INCLUDE_LIST.get(i))) {
+                    return true;
+                }
+            }
+
+            return false;
+
+        } else {
+            return true;
+        }
+    }
+
     /**
      * 录屏和作业分析的回调
      */
     private FileHandler homeworkHandler = new FileHandler() {
         @Override
         public void callback(String destPath, String master, File file) {
-            String fileName = file.getName();
             HashMap<String, ArrayList<File>> map = null;
 
-            if (Config.inExtList(fileName, 1)) {
+            if (file.getName().indexOf(".lxe") != -1) {
                 int fileSize = (int) (file.length() / 1024 / 1024);
                 String fileModifiedTime = new SimpleDateFormat("MM-dd HH:mm:ss").format(new Date(file.lastModified()));
                 String fileDetail = file.getName() + " [" + fileModifiedTime + " " + fileSize + "MB" + "]";
@@ -632,14 +669,7 @@ public class Application {
 
                 map = videoSimilarMap;
 
-            } else if (Config.inExtList(fileName, 0)) {
-                // 排除 C# 项目的 bin、obj、Properties 文件夹内的文件
-                if (fileName.endsWith(".cs") || fileName.endsWith(".txt")) {
-                    if (file.getParentFile().getParent().replace("\\", "/").endsWith("/bin") || file.getParentFile().getParent().replace("\\", "/").endsWith("/obj") || file.getParent().replace("\\", "/").endsWith("/Properties")) {
-                        return;
-                    }
-                }
-
+            } else {
                 map = homeworkMap;
             }
 
@@ -716,6 +746,10 @@ public class Application {
         for (int i = 0; i < list.length; i++) {
             String myMaster = null;
             File file = list[i];
+
+            if (!inExtList(file)) {
+                continue;
+            }
 
             if (file.isDirectory()) {
                 if (Config.classIndex != Config.CLASS_OTHER) {

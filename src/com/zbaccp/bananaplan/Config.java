@@ -30,6 +30,7 @@ public class Config {
         CODE_EXCLUDE_LIST.add("bin");
         CODE_EXCLUDE_LIST.add("obj");
         CODE_EXCLUDE_LIST.add("Properties");
+        CODE_EXCLUDE_LIST.add(".Designer.cs");
     }
 
     public static void init() {
@@ -82,41 +83,5 @@ public class Config {
         }
     }
 
-    /**
-     * 是否在文件扩展名候选列表中
-     * @param name 文件名或扩展名
-     * @param type 0：源码文件，1：视频文件
-     * @return 是否匹配
-     */
-    public static boolean inExtList(String name, int type) {
-        if (name == null || name.equals("")) {
-            return false;
-        }
 
-        int index = name.lastIndexOf('.');
-        if (index == -1) {
-            return false;
-        }
-
-        String ext = name.substring(index);
-
-        ArrayList<String> extList = null;
-
-        switch (type) {
-            case 1:
-                extList = Config.VIDEO_EXT_LIST;
-                break;
-            default:
-                extList = Config.CODE_EXT_INCLUDE_LIST;
-                break;
-        }
-
-        for (int i = 0; i < extList.size(); i++) {
-            if (ext.trim().equalsIgnoreCase(extList.get(i))) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }
