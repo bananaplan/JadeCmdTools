@@ -126,6 +126,8 @@ public class MainForm {
                             JOptionPane.showMessageDialog(null, "更新完成，请重新启动程序", "提示", JOptionPane.INFORMATION_MESSAGE);
                         }
                     });
+                } else {
+                    System.out.println("no new version.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
