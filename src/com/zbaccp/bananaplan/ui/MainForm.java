@@ -74,7 +74,7 @@ public class MainForm {
         menuItemAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "JadeGuiTools 1.0\nCreated by bananaplan. Follow is the source code.\nhttps://github.com/bananaplan/JadeCmdTools", "关于", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "JadeGuiTools 1.0\nCreated by bananaplan.\nOpen source code on https://github.com/bananaplan/JadeCmdTools/tree/dev", "关于", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
