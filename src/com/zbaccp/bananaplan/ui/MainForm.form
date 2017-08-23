@@ -42,7 +42,7 @@
                   <component id="c1669" class="javax.swing.JMenuItem" binding="menuItemPractice">
                     <constraints/>
                     <properties>
-                      <text value="上机完成登记"/>
+                      <text value="编码竞赛"/>
                     </properties>
                   </component>
                   <component id="d672f" class="javax.swing.JMenuItem" binding="menuItemHomework">
@@ -54,7 +54,7 @@
                   <component id="bf9ad" class="javax.swing.JMenuItem" binding="menuItemExtract">
                     <constraints/>
                     <properties>
-                      <text value="提取学员测试选择题答案"/>
+                      <text value="笔试试卷批改"/>
                     </properties>
                   </component>
                 </children>

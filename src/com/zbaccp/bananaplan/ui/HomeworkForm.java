@@ -82,6 +82,7 @@ public class HomeworkForm {
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.showDialog(new JLabel(), "选择");
         File file = chooser.getSelectedFile();
+
         if (file != null) {
             if (file.isDirectory()) {
                 txtPath.setText(file.getAbsolutePath());

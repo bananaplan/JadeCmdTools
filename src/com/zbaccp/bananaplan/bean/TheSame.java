@@ -23,6 +23,6 @@ public class TheSame {
     }
 
     public String toString() {
-        return master1 + " : " + master1File.getName() + "  <->  " + master2 + " : " + master2File.getName() + "，相似度: " + similar;
+        return master1 + " : " + master1File.getName() + "  < >  " + master2 + " : " + master2File.getName() + "，相似度: " + similar;
     }
 }
