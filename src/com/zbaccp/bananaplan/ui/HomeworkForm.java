@@ -31,6 +31,7 @@ public class HomeworkForm {
     private JList lsResult;
     private JButton btnShowDiff;
     private JTextField txtExclude;
+    private JButton btnShowDiffDetails;
 
     public HomeworkForm() {
         if (Config.classIndex != Config.CLASS_OTHER) {
@@ -55,7 +56,7 @@ public class HomeworkForm {
         btnShowDiff.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showDiff();
+                showDiff(false);
             }
         });
 
@@ -63,8 +64,15 @@ public class HomeworkForm {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    showDiff();
+                    showDiff(false);
                 }
+            }
+        });
+
+        btnShowDiffDetails.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showDiff(true);
             }
         });
     }
@@ -123,9 +131,10 @@ public class HomeworkForm {
         }
 
         lsResult.setModel(listModel);
+        Config.initIEList();
     }
 
-    private void showDiff() {
+    private void showDiff(boolean useInnerDiff) {
         int index = lsResult.getSelectedIndex();
 
         if (index == -1) {
@@ -135,7 +144,12 @@ public class HomeworkForm {
 
         try {
             TheSame same = list.get(index);
-            Runtime.getRuntime().exec("java -jar lib/JMeld-2.1.jar \"" + same.master1File.getAbsolutePath() + "\" \"" + same.master2File.getAbsolutePath() + "\"");
+
+            if (useInnerDiff) {
+                ShowDiffDetailsForm.show(same);
+            } else {
+                Runtime.getRuntime().exec("java -jar lib/JMeld-2.1.jar \"" + same.master1File.getAbsolutePath() + "\" \"" + same.master2File.getAbsolutePath() + "\"");
+            }
         } catch (IOException e1) {
             e1.printStackTrace();
         }

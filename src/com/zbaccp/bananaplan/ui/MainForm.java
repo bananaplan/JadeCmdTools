@@ -59,12 +59,6 @@ public class MainForm {
                 ClassSelectForm.show();
             }
         });
-        menuItemExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
         menuItemHomework.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
