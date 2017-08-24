@@ -25,6 +25,7 @@ public class Application {
 
     public Application() {
         Config.init();
+        Config.initIEList();
     }
 
     public void run() {

@@ -7,6 +7,8 @@ import com.zbaccp.bananaplan.bean.Student;
 import com.zbaccp.bananaplan.util.FileUtil;
 
 public class Config {
+    public final static double VERSION = 1.0;
+
     public final static int CLASS_OTHER = -1;
 
     public final static ArrayList<String> VIDEO_EXT_LIST = new ArrayList<String>();
@@ -17,21 +19,6 @@ public class Config {
     public static ArrayList<Student> classStuList = null;
 
     public static int classIndex = CLASS_OTHER;
-
-    static {
-        VIDEO_EXT_LIST.add(".lxe");
-
-        CODE_EXT_INCLUDE_LIST.add(".java");
-        CODE_EXT_INCLUDE_LIST.add(".cs");
-        CODE_EXT_INCLUDE_LIST.add(".html");
-        CODE_EXT_INCLUDE_LIST.add(".htm");
-        CODE_EXT_INCLUDE_LIST.add(".txt");
-
-        CODE_EXCLUDE_LIST.add("bin");
-        CODE_EXCLUDE_LIST.add("obj");
-        CODE_EXCLUDE_LIST.add("Properties");
-        CODE_EXCLUDE_LIST.add(".Designer.cs");
-    }
 
     public static void init() {
         File dir = new File("config");
@@ -83,5 +70,21 @@ public class Config {
         }
     }
 
+    public static void initIEList() {
+        VIDEO_EXT_LIST.clear();
+        VIDEO_EXT_LIST.add(".lxe");
 
+        CODE_EXT_INCLUDE_LIST.clear();
+        CODE_EXT_INCLUDE_LIST.add(".java");
+        CODE_EXT_INCLUDE_LIST.add(".cs");
+        CODE_EXT_INCLUDE_LIST.add(".html");
+        CODE_EXT_INCLUDE_LIST.add(".htm");
+        CODE_EXT_INCLUDE_LIST.add(".txt");
+
+        CODE_EXCLUDE_LIST.clear();
+        CODE_EXCLUDE_LIST.add("bin");
+        CODE_EXCLUDE_LIST.add("obj");
+        CODE_EXCLUDE_LIST.add("Properties");
+        CODE_EXCLUDE_LIST.add(".Designer.cs");
+    }
 }
