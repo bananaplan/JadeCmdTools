@@ -35,9 +35,13 @@ public class SimilarityAnalysis {
         for (int i = 0; i < list1.size(); i++) {
             File file1 = list1.get(i);
 
-            String content1 = FileUtil.readAll(file1.getAbsolutePath());
-            if (content1 == null || content1.length() == 0) {
-                continue;
+            String content1 = null;
+
+            if (!Config.isVideoFile(file1.getName())) {
+                content1 = FileUtil.readAll(file1.getAbsolutePath());
+                if (content1 == null || content1.length() == 0) {
+                    continue;
+                }
             }
 
             for (int j = 0; j < list2.size(); j++) {
@@ -52,7 +56,7 @@ public class SimilarityAnalysis {
                     similar += 100;
                 }
 
-                if (similar < 100) {
+                if (similar < 100 && !Config.isVideoFile(file2.getName())) {
                     String content2 = FileUtil.readAll(file2.getAbsolutePath());
                     if (content2 == null || content2.length() == 0) {
                         continue;

@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.zbaccp.bananaplan.bean.CaptureVideo;
 import com.zbaccp.bananaplan.bean.Student;
 import com.zbaccp.bananaplan.bean.TheSame;
 import com.zbaccp.bananaplan.handler.FileHandler;
@@ -19,11 +20,11 @@ public class Application {
     /**
      * 用于分析录屏和作业没交的HashMap
      */
-    private HashMap<String, String> videoMap = null;
-    private HashMap<String, ArrayList<File>> videoSimilarMap = null;
+    private HashMap<String, ArrayList<File>> videoMap = null;
     private HashMap<String, ArrayList<File>> homeworkMap = null;
 
     public Application() {
+        Config.init();
         Config.initIEList();
     }
 
@@ -417,8 +418,7 @@ public class Application {
         String videoPath = destPath + "/video.txt";
         String homeworkPath = destPath + "/homework.txt";
 
-        videoMap = new HashMap<String, String>();
-        videoSimilarMap = new HashMap<String, ArrayList<File>>();
+        videoMap = new HashMap<String, ArrayList<File>>();
         homeworkMap = new HashMap<String, ArrayList<File>>();
 
         dfs(path, destPath, FileUtil.getDirName(path), masterDeepth, 0, homeworkHandler);
@@ -427,7 +427,6 @@ public class Application {
         // 分析录屏，并将结果写入文件
         doVideoCheck(videoPath);
         videoMap = null;
-        videoSimilarMap = null;
 
         // 分析作业
         ArrayList<TheSame> list = doHomeworkCheck(homeworkPath);
@@ -445,30 +444,37 @@ public class Application {
         System.out.println("\n正在分析录屏...");
 
         if (!videoMap.isEmpty()) {
-            int index = 0;
-            String[][] logs = new String[videoMap.size()][];
+            // 把 Map 中的数据，封装成 CaptureVideo 录屏信息对象，并转移到 List 中，为下面排序做准备
+            ArrayList<CaptureVideo> captureList = new ArrayList<CaptureVideo>();
 
-            for (Map.Entry<String, String> entry : videoMap.entrySet()) {
-                String detail = entry.getValue();
-                String size = detail.substring(0, detail.indexOf("MB"));
-                String line = entry.getKey() + "\t" + entry.getValue();
-                logs[index++] = new String[]{size, line};
+            for(Map.Entry<String, ArrayList<File>> entry : videoMap.entrySet()) {
+                ArrayList<File> files = entry.getValue();
+                CaptureVideo capture = new CaptureVideo(entry.getKey(), files);
+                captureList.add(capture);
             }
+
+            // 根据录屏文件的大小降序排序
+            Collections.sort(captureList, new Comparator<CaptureVideo>() {
+                @Override
+                public int compare(CaptureVideo o1, CaptureVideo o2) {
+                    if (o1.totalLength > o1.totalLength) {
+                        return -1;
+                    } else if (o1.totalLength < o2.totalLength) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
 
             FileUtil fileUtil = new FileUtil(path, true);
 
-            // 根据录屏文件的大小降序排序
-            for (int i = 0; i < logs.length; i++) {
-                for (int j = 0; j < logs.length - 1 - i; j++) {
-                    if (Integer.parseInt(logs[j][0]) > Integer.parseInt(logs[j + 1][0])) {
-                        String[] temp = logs[j];
-                        logs[j] = logs[j + 1];
-                        logs[j + 1] = temp;
-                    }
-                }
-
-                System.out.println(logs[logs.length - 1 - i][1]);
-                fileUtil.writeLine(logs[logs.length - 1 - i][1]);
+            // 按录屏文件大小，显示输出录屏信息
+            String captureInfo = null;
+            for (CaptureVideo capture : captureList) {
+                captureInfo = capture.toString();
+                System.out.println(captureInfo);
+                fileUtil.writeLine(captureInfo);
             }
 
             // 检查没有录屏的学员
@@ -483,7 +489,7 @@ public class Application {
             }
 
             // 检查录屏抄袭的学员
-            ArrayList<TheSame> list = walkSimilarFiles(videoSimilarMap);
+            ArrayList<TheSame> list = walkSimilarFiles(videoMap);
 
             for (int i = 0; i < list.size(); i++) {
                 TheSame same = list.get(i);
@@ -491,7 +497,7 @@ public class Application {
                 fileUtil.writeLine(same.toString());
             }
 
-            System.out.println("\n写入文件成功：" + path + " -> 合并后的记录\n");
+            System.out.println("\n写入文件成功：" + path + " -> 合并后的记录");
             fileUtil.close();
 
         } else {
@@ -546,8 +552,7 @@ public class Application {
                 fileUtil.writeLine(same.toString());
             }
 
-            System.out.println();
-            System.out.println("写入文件成功：" + path);
+            System.out.println("\n写入文件成功：" + path);
 
             return list;
         } finally {
@@ -608,14 +613,19 @@ public class Application {
         bfs(path, path, masterDeepth, copySelectAnswerHandler);
     }
 
-
-    private boolean inExtList(File file) {
+    /**
+     * 过滤目录和文件
+     * @param file 目录或文件的 File 对象
+     * @return 是否检查通过
+     */
+    private boolean doFilter(File file) {
         if (file == null || !file.exists()) {
             return false;
         }
 
         String name = file.getName();
 
+        // 忽略指定目录和文件
         for (int i = 0; i < Config.CODE_EXCLUDE_LIST.size(); i++) {
             String exclude = Config.CODE_EXCLUDE_LIST.get(i);
 
@@ -631,16 +641,11 @@ public class Application {
         }
 
         if (file.isFile()) {
-            String ext = name.substring(name.lastIndexOf('.'));
-
-            for (int i = 0; i < Config.CODE_EXT_INCLUDE_LIST.size(); i++) {
-                if (ext.equalsIgnoreCase(Config.CODE_EXT_INCLUDE_LIST.get(i))) {
-                    return true;
-                }
+            if (Config.isVideoFile(name) || Config.isCodeFile(name)) {
+                return true;
             }
 
             return false;
-
         } else {
             return true;
         }
@@ -654,21 +659,8 @@ public class Application {
         public void callback(String destPath, String master, File file) {
             HashMap<String, ArrayList<File>> map = null;
 
-            if (file.getName().indexOf(".lxe") != -1) {
-                int fileSize = (int) (file.length() / 1024 / 1024);
-                String fileModifiedTime = new SimpleDateFormat("MM-dd HH:mm:ss").format(new Date(file.lastModified()));
-                String fileDetail = file.getName() + " [" + fileModifiedTime + " " + fileSize + "MB" + "]";
-
-                if (!videoMap.containsKey(master)) {
-                    videoMap.put(master, fileSize + "MB" + "\t" + fileDetail);
-                } else {
-                    String[] log = videoMap.get(master).split("\t");
-                    int totalSize = Integer.parseInt(log[0].substring(0, log[0].indexOf("MB")));
-                    videoMap.put(master, (totalSize + fileSize) + "MB" + "\t" + log[1] + " + " + fileDetail);
-                }
-
-                map = videoSimilarMap;
-
+            if (Config.isVideoFile(file.getName())) {
+                map = videoMap;
             } else {
                 map = homeworkMap;
             }
@@ -747,7 +739,7 @@ public class Application {
             String myMaster = null;
             File file = list[i];
 
-            if (!inExtList(file)) {
+            if (!doFilter(file)) {
                 continue;
             }
 
