@@ -87,4 +87,28 @@ public class Config {
         CODE_EXCLUDE_LIST.add("Properties");
         CODE_EXCLUDE_LIST.add(".Designer.cs");
     }
+
+    public static boolean isVideoFile(String name) {
+        String ext = name.substring(name.lastIndexOf('.'));
+
+        for (int i = 0; i < Config.VIDEO_EXT_LIST.size(); i++) {
+            if (ext.equalsIgnoreCase(Config.VIDEO_EXT_LIST.get(i))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isCodeFile(String name) {
+        String ext = name.substring(name.lastIndexOf('.'));
+
+        for (int i = 0; i < Config.CODE_EXT_INCLUDE_LIST.size(); i++) {
+            if (ext.equalsIgnoreCase(Config.CODE_EXT_INCLUDE_LIST.get(i))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
