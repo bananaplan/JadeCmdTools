@@ -23,9 +23,6 @@ public class Application {
     private HashMap<String, ArrayList<File>> videoMap = null;
     public HashMap<String, ArrayList<File>> homeworkMap = null;
 
-    public ArrayList<String> undoVideo = null;
-    public ArrayList<String> undoHomework = null;
-
     public Application() {
         Config.init();
         Config.initFilter();
@@ -395,10 +392,10 @@ public class Application {
             }
         }
 
-        homeworkAnalysis(path, masterDeepth);
+        homeworkAnalysis(path, masterDeepth, null);
     }
 
-    public ArrayList<TheSame> homeworkAnalysis(String path, int masterDeepth) {
+    public ArrayList<TheSame> homeworkAnalysis(String path, int masterDeepth, ArrayList<String> undoHomework) {
         path = path.replace('\\', '/');
 
         String date = null;
@@ -432,7 +429,7 @@ public class Application {
         videoMap = null;
 
         // 分析作业
-        ArrayList<TheSame> list = doHomeworkCheck(homeworkPath);
+        ArrayList<TheSame> list = doHomeworkCheck(homeworkPath, undoHomework);
         homeworkMap = null;
 
         return list;
@@ -483,8 +480,6 @@ public class Application {
             // 检查没有录屏的学员
             if (Config.classIndex != Config.CLASS_OTHER) {
                 String info = null;
-                undoVideo = new ArrayList<String>();
-
                 for (int i = 0; i < Config.classStuList.size(); i++) {
                     Student stu = Config.classStuList.get(i);
                     if (stu != null && videoMap.get(stu.name) == null) {
@@ -492,7 +487,6 @@ public class Application {
 
                         System.out.println(info);
                         fileUtil.writeLine(info);
-                        undoVideo.add(info);
                     }
                 }
             }
@@ -519,7 +513,7 @@ public class Application {
      *
      * @param path 分析结果保存的文件路径
      */
-    private ArrayList<TheSame> doHomeworkCheck(String path) {
+    private ArrayList<TheSame> doHomeworkCheck(String path, ArrayList<String> undoHomework) {
         System.out.println("\n正在分析作业，可能耗时较长，请耐心等待...");
 
         FileUtil fileUtil = new FileUtil(path, true);
@@ -528,8 +522,6 @@ public class Application {
             // 检查没有作业的学员
             if (Config.classIndex != Config.CLASS_OTHER) {
                 String info = null;
-                undoHomework = new ArrayList<String>();
-
                 for (int i = 0; i < Config.classStuList.size(); i++) {
                     Student stu = Config.classStuList.get(i);
                     if (stu != null && homeworkMap.get(stu.name) == null) {
@@ -537,7 +529,10 @@ public class Application {
 
                         System.out.println(info);
                         fileUtil.writeLine(info);
-                        undoHomework.add(info);
+
+                        if (undoHomework != null) {
+                            undoHomework.add(info);
+                        }
                     }
                 }
 
