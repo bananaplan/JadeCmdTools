@@ -77,7 +77,7 @@ public class MainForm {
 
     public static void setMenuEnabled(boolean isEnabled) {
         MainForm.instance.menuItemLucky.setEnabled(isEnabled);
-        MainForm.instance.menuItemPractice.setEnabled(isEnabled);
+//        MainForm.instance.menuItemPractice.setEnabled(isEnabled);
     }
 
     private void checkUpgrade() {

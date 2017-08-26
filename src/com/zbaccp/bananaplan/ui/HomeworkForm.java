@@ -20,6 +20,7 @@ public class HomeworkForm {
     private static JFrame frame;
 
     private ArrayList<TheSame> list;
+    private ArrayList<String> undoList;
     private DefaultListModel listModel;
 
     private JPanel panelMain;
@@ -79,6 +80,23 @@ public class HomeworkForm {
                 showDiff(true);
             }
         });
+        btnLog.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (MainForm.app.videoPath != null && !MainForm.app.videoPath.equals("")) {
+                        if (new File(MainForm.app.videoPath).exists()) {
+                            Runtime.getRuntime().exec("notepad " + MainForm.app.videoPath);
+                            return;
+                        }
+                    }
+
+                    JOptionPane.showMessageDialog(null, "没有发现录屏文件", "提示", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
     private void showFileChooser() {
@@ -131,17 +149,24 @@ public class HomeworkForm {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                list = MainForm.app.homeworkAnalysis(txtPath.getText(), Config.classIndex == Config.CLASS_OTHER ? Integer.parseInt(txtDepth.getText()) : 0);
+                undoList = new ArrayList<String>();
+                list = MainForm.app.homeworkAnalysis(txtPath.getText(), Config.classIndex == Config.CLASS_OTHER ? Integer.parseInt(txtDepth.getText()) : 0, undoList);
 
                 // set the result list to JList component
                 listModel = new DefaultListModel();
+
+                for (String undo : undoList) {
+                    listModel.addElement(undo + " 没交作业");
+                }
 
                 for (TheSame same : list) {
                     listModel.addElement(same.toString());
                 }
 
                 lsResult.setModel(listModel);
-                Config.initIEList();
+
+                changeState(false);
+                Config.initFilter();
             }
         }).start();
 
@@ -161,7 +186,6 @@ public class HomeworkForm {
                             }
                         } else {
                             if (max > 0) {
-                                changeState(false);
                                 break;
                             }
                         }
@@ -170,7 +194,6 @@ public class HomeworkForm {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (NullPointerException e) {
-                        changeState(false);
                         break;
                     }
                 }
@@ -181,8 +204,11 @@ public class HomeworkForm {
     private void showDiff(boolean useInnerDiff) {
         int index = lsResult.getSelectedIndex();
 
-        if (index == -1) {
-            JOptionPane.showMessageDialog(null, "请选择分析结果列表中的记录", "提示", JOptionPane.INFORMATION_MESSAGE);
+        if (undoList != null && undoList.size() > 0) {
+            index -= undoList.size();
+        }
+
+        if (index < 0) {
             return;
         }
 
@@ -201,14 +227,24 @@ public class HomeworkForm {
 
     private void changeState(boolean init) {
         if (init) {
-            proBar.setVisible(true);
             proBar.setValue(0);
+            proBar.setVisible(true);
+
+            btnStart.setEnabled(false);
+            btnShowDiff.setEnabled(false);
+            btnShowDiffDetails.setEnabled(false);
+            btnLog.setEnabled(false);
 
             if (listModel != null) {
                 listModel.removeAllElements();
             }
         } else {
-            proBar.setValue(100);
+            proBar.setVisible(false);
+
+            btnStart.setEnabled(true);
+            btnShowDiff.setEnabled(true);
+            btnShowDiffDetails.setEnabled(true);
+            btnLog.setEnabled(true);
         }
     }
 

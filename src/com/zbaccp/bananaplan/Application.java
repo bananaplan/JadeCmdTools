@@ -23,6 +23,9 @@ public class Application {
     private HashMap<String, ArrayList<File>> videoMap = null;
     public HashMap<String, ArrayList<File>> homeworkMap = null;
 
+    public String videoPath;
+    public String homeworkPath;
+
     public Application() {
         Config.init();
         Config.initFilter();
@@ -415,8 +418,8 @@ public class Application {
         }
 
         String destPath = "report/" + className + "/" + date;
-        String videoPath = destPath + "/video.txt";
-        String homeworkPath = destPath + "/homework.txt";
+        videoPath = destPath + "/video.txt";
+        homeworkPath = destPath + "/homework.txt";
 
         videoMap = new HashMap<String, ArrayList<File>>();
         homeworkMap = new HashMap<String, ArrayList<File>>();
@@ -479,14 +482,19 @@ public class Application {
 
             // 检查没有录屏的学员
             if (Config.classIndex != Config.CLASS_OTHER) {
-                String info = null;
-                for (int i = 0; i < Config.classStuList.size(); i++) {
-                    Student stu = Config.classStuList.get(i);
-                    if (stu != null && videoMap.get(stu.name) == null) {
-                        info = stu.name + "\t" + "没有录屏";
+                if (Config.classStuList.size() > 0) {
+                    System.out.println();
+                    fileUtil.write("\r\n", true);
 
-                        System.out.println(info);
-                        fileUtil.writeLine(info);
+                    String info = null;
+                    for (int i = 0; i < Config.classStuList.size(); i++) {
+                        Student stu = Config.classStuList.get(i);
+                        if (stu != null && videoMap.get(stu.name) == null) {
+                            info = stu.name + "\t" + "没有录屏";
+
+                            System.out.println(info);
+                            fileUtil.writeLine(info);
+                        }
                     }
                 }
             }
@@ -494,10 +502,15 @@ public class Application {
             // 检查录屏抄袭的学员
             ArrayList<TheSame> list = walkSimilarFiles(videoMap);
 
-            for (int i = 0; i < list.size(); i++) {
-                TheSame same = list.get(i);
-                System.out.println(same.toString());
-                fileUtil.writeLine(same.toString());
+            if (list.size() > 0) {
+                System.out.println();
+                fileUtil.write("\r\n", true);
+
+                for (int i = 0; i < list.size(); i++) {
+                    TheSame same = list.get(i);
+                    System.out.println(same.toString());
+                    fileUtil.writeLine(same.toString());
+                }
             }
 
             System.out.println("\n写入文件成功：" + path + " -> 合并后的记录");
@@ -531,7 +544,7 @@ public class Application {
                         fileUtil.writeLine(info);
 
                         if (undoHomework != null) {
-                            undoHomework.add(info);
+                            undoHomework.add(stu.name);
                         }
                     }
                 }

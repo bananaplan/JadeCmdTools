@@ -42,6 +42,7 @@
                   <component id="c1669" class="javax.swing.JMenuItem" binding="menuItemPractice">
                     <constraints/>
                     <properties>
+                      <enabled value="false"/>
                       <text value="编码竞赛"/>
                     </properties>
                   </component>
@@ -54,6 +55,7 @@
                   <component id="bf9ad" class="javax.swing.JMenuItem" binding="menuItemExtract">
                     <constraints/>
                     <properties>
+                      <enabled value="false"/>
                       <text value="笔试试卷批改"/>
                     </properties>
                   </component>
@@ -91,6 +93,7 @@
                   <component id="7e761" class="javax.swing.JMenuItem" binding="menuItemHow">
                     <constraints/>
                     <properties>
+                      <enabled value="false"/>
                       <text value="如何使用"/>
                     </properties>
                   </component>
