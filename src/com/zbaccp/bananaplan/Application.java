@@ -21,11 +21,14 @@ public class Application {
      * 用于分析录屏和作业没交的HashMap
      */
     private HashMap<String, ArrayList<File>> videoMap = null;
-    private HashMap<String, ArrayList<File>> homeworkMap = null;
+    public HashMap<String, ArrayList<File>> homeworkMap = null;
+
+    public ArrayList<String> undoVideo = null;
+    public ArrayList<String> undoHomework = null;
 
     public Application() {
         Config.init();
-        Config.initIEList();
+        Config.initFilter();
     }
 
     public void run() {
@@ -479,11 +482,17 @@ public class Application {
 
             // 检查没有录屏的学员
             if (Config.classIndex != Config.CLASS_OTHER) {
+                String info = null;
+                undoVideo = new ArrayList<String>();
+
                 for (int i = 0; i < Config.classStuList.size(); i++) {
                     Student stu = Config.classStuList.get(i);
                     if (stu != null && videoMap.get(stu.name) == null) {
-                        System.out.println(stu.name + "\t" + "没有录屏");
-                        fileUtil.writeLine(stu.name + "\t" + "没有录屏");
+                        info = stu.name + "\t" + "没有录屏";
+
+                        System.out.println(info);
+                        fileUtil.writeLine(info);
+                        undoVideo.add(info);
                     }
                 }
             }
@@ -518,11 +527,17 @@ public class Application {
         try {
             // 检查没有作业的学员
             if (Config.classIndex != Config.CLASS_OTHER) {
+                String info = null;
+                undoHomework = new ArrayList<String>();
+
                 for (int i = 0; i < Config.classStuList.size(); i++) {
                     Student stu = Config.classStuList.get(i);
                     if (stu != null && homeworkMap.get(stu.name) == null) {
-                        System.out.println(stu.name + "\t" + "没交作业");
-                        fileUtil.writeLine(stu.name + "\t" + "没交作业");
+                        info = stu.name + "\t" + "没交作业";
+
+                        System.out.println(info);
+                        fileUtil.writeLine(info);
+                        undoHomework.add(info);
                     }
                 }
 
