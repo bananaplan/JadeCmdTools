@@ -32,12 +32,16 @@ public class HomeworkForm {
     private JButton btnShowDiff;
     private JTextField txtExclude;
     private JButton btnShowDiffDetails;
+    private JProgressBar proBar;
+    private JButton btnLog;
 
     public HomeworkForm() {
         if (Config.classIndex != Config.CLASS_OTHER) {
             this.lblDepth.setForeground(Color.GRAY);
             this.txtDepth.setEnabled(false);
         }
+
+        this.proBar.setVisible(false);
 
         btnSelect.addActionListener(new ActionListener() {
             @Override
@@ -122,17 +126,56 @@ public class HomeworkForm {
             }
         }
 
-        list = MainForm.app.homeworkAnalysis(path, masterDepth);
+        changeState(true);
 
-        // set the result list to JList component
-        listModel = new DefaultListModel();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                list = MainForm.app.homeworkAnalysis(txtPath.getText(), Config.classIndex == Config.CLASS_OTHER ? Integer.parseInt(txtDepth.getText()) : 0);
 
-        for (TheSame same : list) {
-            listModel.addElement(same.toString());
-        }
+                // set the result list to JList component
+                listModel = new DefaultListModel();
 
-        lsResult.setModel(listModel);
-        Config.initIEList();
+                for (TheSame same : list) {
+                    listModel.addElement(same.toString());
+                }
+
+                lsResult.setModel(listModel);
+                Config.initIEList();
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                double max = 0;
+                while (true) {
+                    try {
+                        if (MainForm.app.homeworkMap != null) {
+                            int size = MainForm.app.homeworkMap.size();
+
+                            if (size >= max) {
+                                max = size;
+                            } else {
+                                proBar.setValue((int) ((max - size) / max * 100));
+                            }
+                        } else {
+                            if (max > 0) {
+                                changeState(false);
+                                break;
+                            }
+                        }
+
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        changeState(false);
+                        break;
+                    }
+                }
+            }
+        }).start();
     }
 
     private void showDiff(boolean useInnerDiff) {
@@ -153,6 +196,19 @@ public class HomeworkForm {
             }
         } catch (IOException e1) {
             e1.printStackTrace();
+        }
+    }
+
+    private void changeState(boolean init) {
+        if (init) {
+            proBar.setVisible(true);
+            proBar.setValue(0);
+
+            if (listModel != null) {
+                listModel.removeAllElements();
+            }
+        } else {
+            proBar.setValue(100);
         }
     }
 

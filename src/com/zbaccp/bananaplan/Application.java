@@ -21,7 +21,7 @@ public class Application {
      * 用于分析录屏和作业没交的HashMap
      */
     private HashMap<String, ArrayList<File>> videoMap = null;
-    private HashMap<String, ArrayList<File>> homeworkMap = null;
+    public HashMap<String, ArrayList<File>> homeworkMap = null;
 
     public Application() {
         Config.init();
