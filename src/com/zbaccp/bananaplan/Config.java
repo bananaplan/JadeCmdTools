@@ -70,7 +70,7 @@ public class Config {
         }
     }
 
-    public static void initIEList() {
+    public static void initFilter() {
         VIDEO_EXT_LIST.clear();
         VIDEO_EXT_LIST.add(".lxe");
 
