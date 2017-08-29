@@ -768,7 +768,7 @@ public class Application {
 
             if (file.isDirectory()) {
                 if (Config.classIndex != Config.CLASS_OTHER) {
-                    Student stu = Student.getStudent(Config.classStuList, file.getName(), 2);
+                    Student stu = Student.getStudent(Config.classStuList, file.getName(), 0);
                     if (stu != null) {
                         myMaster = stu.name;
                     }
@@ -777,7 +777,9 @@ public class Application {
                         myMaster = file.getName();
                     }
                 }
+
                 dfs(file.getAbsolutePath(), destPath, myMaster != null ? myMaster : master, masterDeepth, curDeepth, handler);
+
             } else {
                 if (Config.classIndex != Config.CLASS_OTHER) {
                     Student stu = Student.getStudent(Config.classStuList, FileUtil.getFileName(file), 2);
@@ -786,7 +788,6 @@ public class Application {
                     }
                 } else {
                     if (masterDeepth == 0) {
-//                        myMaster = FileUtil.getDirName(file.getParent());
                         myMaster = file.getName();
                     }
                 }
