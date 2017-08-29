@@ -7,7 +7,7 @@ import com.zbaccp.bananaplan.bean.Student;
 import com.zbaccp.bananaplan.util.FileUtil;
 
 public class Config {
-    public final static double VERSION = 1.0;
+    public final static double VERSION = 0.1;
 
     public final static int CLASS_OTHER = -1;
 
@@ -20,6 +20,9 @@ public class Config {
 
     public static int classIndex = CLASS_OTHER;
 
+    /**
+     * 初始化班级
+     */
     public static void init() {
         File dir = new File("config");
         if (dir.exists() && dir.isDirectory()) {
@@ -39,6 +42,10 @@ public class Config {
         }
     }
 
+    /**
+     * 根据班级index，初始化学员列表
+     * @param index 班级index
+     */
     public static void initStudentList(int index) {
         classIndex = index;
         classStuList = new ArrayList<Student>();
@@ -70,6 +77,9 @@ public class Config {
         }
     }
 
+    /**
+     * 初始化目录和文件过滤列表
+     */
     public static void initFilter() {
         VIDEO_EXT_LIST.clear();
         VIDEO_EXT_LIST.add(".lxe");
@@ -88,6 +98,11 @@ public class Config {
         CODE_EXCLUDE_LIST.add(".Designer.cs");
     }
 
+    /**
+     * 是否为视频文件
+     * @param name
+     * @return
+     */
     public static boolean isVideoFile(String name) {
         String ext = name.substring(name.lastIndexOf('.'));
 
@@ -100,6 +115,11 @@ public class Config {
         return false;
     }
 
+    /**
+     * 是否为代码文件
+     * @param name
+     * @return
+     */
     public static boolean isCodeFile(String name) {
         String ext = name.substring(name.lastIndexOf('.'));
 
