@@ -17,8 +17,8 @@ import java.net.URL;
  */
 public class MainForm {
     public static MainForm instance;
-    public static JFrame frame;
     public static Application app;
+    public static JFrame frame;
 
     private JPanel panelMain;
     private JPanel panelMenu;
@@ -30,6 +30,7 @@ public class MainForm {
     private JMenuItem menuItemLucky;
     private JMenuItem menuItemConfigClass;
     private JMenuItem menuItemHow;
+    private JMenuItem menuItemUpgrade;
     private JMenuItem menuItemAbout;
     private JMenuItem menuItemPractice;
     private JMenuItem menuItemHomework;
@@ -65,10 +66,16 @@ public class MainForm {
                 HomeworkForm.show();
             }
         });
+        menuItemUpgrade.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkUpgrade();
+            }
+        });
         menuItemAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "JadeGuiTools 0.1\nCreated by bananaplan. Open source code on\nhttps://github.com/bananaplan/JadeCmdTools/tree/dev", "关于", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "JadeGuiTools 0.1\nCreated by bananaplan. Open source code on\nhttps://github.com/bananaplan/JadeCmdTools/tree/gui", "关于", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -123,9 +130,13 @@ public class MainForm {
                 handler.callback(null, null, new File(filename));
 
             } catch (MalformedURLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
             } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
             } finally {
                 if (in != null) {
                     try {
@@ -158,6 +169,9 @@ public class MainForm {
                 if (version > Config.VERSION) {
                     if (JOptionPane.showConfirmDialog(null, "发现新版本, Version: " + version + ", 是否下载更新？", "确认",
                             JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
+
+                        JOptionPane.showMessageDialog(null, "正在下载更新，请稍后...", "提示", JOptionPane.INFORMATION_MESSAGE);
+
                         String jarUrl = fileUtil.readLine();
                         final String jarFileName = jarUrl.substring(jarUrl.lastIndexOf('/') + 1);
 
@@ -168,9 +182,12 @@ public class MainForm {
                                 fileUtil.write("java -jar " + jarFileName + "\r\npause", false);
                                 fileUtil.close();
 
+                                System.out.println("finish upgrade.");
                                 JOptionPane.showMessageDialog(null, "更新完成，请重新启动程序", "提示", JOptionPane.INFORMATION_MESSAGE);
                             }
                         });
+                    } else {
+                        System.out.println("cancel upgrade.");
                     }
                 } else {
                     System.out.println("no new version.");

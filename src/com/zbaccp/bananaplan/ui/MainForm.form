@@ -97,7 +97,13 @@
                       <text value="如何使用"/>
                     </properties>
                   </component>
-                  <component id="832c" class="javax.swing.JMenuItem" binding="menuItemAbout">
+                  <component id="832c" class="javax.swing.JMenuItem" binding="menuItemUpgrade">
+                    <constraints/>
+                    <properties>
+                      <text value="检查更新"/>
+                    </properties>
+                  </component>
+                  <component id="36bc1" class="javax.swing.JMenuItem" binding="menuItemAbout">
                     <constraints/>
                     <properties>
                       <text value="关于"/>
