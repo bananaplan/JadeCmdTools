@@ -83,7 +83,7 @@ public class MainForm {
     private void checkUpgrade() {
         System.out.println("check upgrade ...");
 
-        String logUrl = "https://raw.githubusercontent.com/bananaplan/JadeCmdTools/dev/Changelog.txt";
+        String logUrl = "https://raw.githubusercontent.com/bananaplan/JadeCmdTools/gui/Changelog.txt";
         String logFileName = "Changelog.txt";
 
         startDownload(logUrl, logFileName, logHandler);
@@ -150,39 +150,36 @@ public class MainForm {
         public void callback(String destPath, String master, File file) {
             String name = file.getName();
 
-//            FileUtil fileUtil = new FileUtil(name);
-//            fileUtil.write(FileUtil.readAll(name).replace("\n", "\r\n"), false);
-//            fileUtil.close();
-
             FileUtil fileUtil = new FileUtil(name);
-            String versionInfo = fileUtil.readLine();
-            System.out.println(versionInfo);
+            try {
+                String versionInfo = fileUtil.readLine();
+                double version = Double.parseDouble(versionInfo.substring(versionInfo.indexOf(':') + 1));
 
-//            try {
-//                double version = Double.parseDouble(firstLine.substring(firstLine.indexOf(':') + 1));
-//
-//                if (version > Config.VERSION) {
-//                    JOptionPane.showMessageDialog(null, "发现新版本, Version: " + version + ", 准备开始下载更新", "提示", JOptionPane.INFORMATION_MESSAGE);
-//
-//                    String jarUrl = "https://github.com/bananaplan/JadeCmdTools/blob/dev/JadeCmdTools-1.1.jar?raw=true";
-//                    final String jarFileName = jarUrl.substring(jarUrl.lastIndexOf('/') + 1, jarUrl.lastIndexOf('?'));
-//
-//                    startDownload(jarUrl, jarFileName, new FileHandler() {
-//                        @Override
-//                        public void callback(String destPath, String master, File file) {
-//                            FileUtil fileUtil = new FileUtil("run.bat");
-//                            fileUtil.write("java -jar " + jarFileName + "\r\npause", false);
-//                            fileUtil.close();
-//
-//                            JOptionPane.showMessageDialog(null, "更新完成，请重新启动程序", "提示", JOptionPane.INFORMATION_MESSAGE);
-//                        }
-//                    });
-//                } else {
-//                    System.out.println("no new version.");
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+                if (version > Config.VERSION) {
+                    if (JOptionPane.showConfirmDialog(null, "发现新版本, Version: " + version + ", 是否下载更新？", "确认",
+                            JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
+                        String jarUrl = fileUtil.readLine();
+                        final String jarFileName = jarUrl.substring(jarUrl.lastIndexOf('/') + 1);
+
+                        startDownload(jarUrl, jarFileName, new FileHandler() {
+                            @Override
+                            public void callback(String destPath, String master, File file) {
+                                FileUtil fileUtil = new FileUtil("run.bat");
+                                fileUtil.write("java -jar " + jarFileName + "\r\npause", false);
+                                fileUtil.close();
+
+                                JOptionPane.showMessageDialog(null, "更新完成，请重新启动程序", "提示", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        });
+                    }
+                } else {
+                    System.out.println("no new version.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                fileUtil.close();
+            }
         }
     };
 
