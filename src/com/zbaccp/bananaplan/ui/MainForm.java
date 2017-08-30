@@ -26,9 +26,9 @@ public class MainForm {
     private JMenuBar menuBar;
     private JMenu menuTools;
     private JMenu menuConfig;
+    private JMenu menuHelp;
     private JMenuItem menuItemLucky;
     private JMenuItem menuItemConfigClass;
-    private JMenu menuHelp;
     private JMenuItem menuItemHow;
     private JMenuItem menuItemAbout;
     private JMenuItem menuItemPractice;
@@ -68,7 +68,7 @@ public class MainForm {
         menuItemAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "JadeGuiTools 1.0\nCreated by bananaplan.\nOpen source code on https://github.com/bananaplan/JadeCmdTools/tree/dev", "关于", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "JadeGuiTools 0.1\nCreated by bananaplan. Open source code on\nhttps://github.com/bananaplan/JadeCmdTools/tree/dev", "关于", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -89,45 +89,9 @@ public class MainForm {
         startDownload(logUrl, logFileName, logHandler);
     }
 
-    private FileHandler logHandler = new FileHandler() {
-        @Override
-        public void callback(String destPath, String master, File file) {
-            String name = file.getName();
-
-            FileUtil fileUtil = new FileUtil(name);
-            fileUtil.write(FileUtil.readAll(name).replace("\n", "\r\n"), false);
-            fileUtil.close();
-
-            String log = FileUtil.readAll(name);
-            String firstLine = log.substring(0, log.indexOf('\r'));
-
-            try {
-                double version = Double.parseDouble(firstLine.substring(firstLine.indexOf(':') + 1));
-
-                if (version > Config.VERSION) {
-                    JOptionPane.showMessageDialog(null, "发现新版本, Version: " + version + ", 准备开始下载更新", "提示", JOptionPane.INFORMATION_MESSAGE);
-
-                    String jarUrl = "https://github.com/bananaplan/JadeCmdTools/blob/dev/JadeCmdTools-1.1.jar?raw=true";
-                    final String jarFileName = jarUrl.substring(jarUrl.lastIndexOf('/') + 1, jarUrl.lastIndexOf('?'));
-
-                    startDownload(jarUrl, jarFileName, new FileHandler() {
-                        @Override
-                        public void callback(String destPath, String master, File file) {
-                            FileUtil fileUtil = new FileUtil("run.bat");
-                            fileUtil.write("java -jar " + jarFileName + "\r\npause", false);
-                            fileUtil.close();
-
-                            JOptionPane.showMessageDialog(null, "更新完成，请重新启动程序", "提示", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                    });
-                } else {
-                    System.out.println("no new version.");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
+    private void startDownload(String url, String filename, FileHandler handler) {
+        new Thread(new Download(url, filename, handler)).start();
+    }
 
     private class Download implements Runnable {
         private String url;
@@ -159,13 +123,9 @@ public class MainForm {
                 handler.callback(null, null, new File(filename));
 
             } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
             } catch (Exception e) {
-                e.printStackTrace();
             } finally {
                 if (in != null) {
                     try {
@@ -185,11 +145,46 @@ public class MainForm {
         }
     }
 
-    ;
+    private FileHandler logHandler = new FileHandler() {
+        @Override
+        public void callback(String destPath, String master, File file) {
+            String name = file.getName();
 
-    private void startDownload(String url, String filename, FileHandler handler) {
-        new Thread(new Download(url, filename, handler)).start();
-    }
+//            FileUtil fileUtil = new FileUtil(name);
+//            fileUtil.write(FileUtil.readAll(name).replace("\n", "\r\n"), false);
+//            fileUtil.close();
+
+            FileUtil fileUtil = new FileUtil(name);
+            String versionInfo = fileUtil.readLine();
+            System.out.println(versionInfo);
+
+//            try {
+//                double version = Double.parseDouble(firstLine.substring(firstLine.indexOf(':') + 1));
+//
+//                if (version > Config.VERSION) {
+//                    JOptionPane.showMessageDialog(null, "发现新版本, Version: " + version + ", 准备开始下载更新", "提示", JOptionPane.INFORMATION_MESSAGE);
+//
+//                    String jarUrl = "https://github.com/bananaplan/JadeCmdTools/blob/dev/JadeCmdTools-1.1.jar?raw=true";
+//                    final String jarFileName = jarUrl.substring(jarUrl.lastIndexOf('/') + 1, jarUrl.lastIndexOf('?'));
+//
+//                    startDownload(jarUrl, jarFileName, new FileHandler() {
+//                        @Override
+//                        public void callback(String destPath, String master, File file) {
+//                            FileUtil fileUtil = new FileUtil("run.bat");
+//                            fileUtil.write("java -jar " + jarFileName + "\r\npause", false);
+//                            fileUtil.close();
+//
+//                            JOptionPane.showMessageDialog(null, "更新完成，请重新启动程序", "提示", JOptionPane.INFORMATION_MESSAGE);
+//                        }
+//                    });
+//                } else {
+//                    System.out.println("no new version.");
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        }
+    };
 
     public static void main(String[] args) {
         frame = new JFrame("JadeGuiTools");

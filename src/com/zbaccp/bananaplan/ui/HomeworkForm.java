@@ -80,6 +80,7 @@ public class HomeworkForm {
                 showDiff(true);
             }
         });
+
         btnLog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -209,6 +210,7 @@ public class HomeworkForm {
         }
 
         if (index < 0) {
+            JOptionPane.showMessageDialog(null, "请先选中分析结果中的有效记录", "提示", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
