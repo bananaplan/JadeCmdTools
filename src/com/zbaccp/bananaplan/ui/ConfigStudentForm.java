@@ -58,10 +58,17 @@ public class ConfigStudentForm {
                 String className = cboClassName.getSelectedItem().toString();
                 String content = txtSutdentList.getText();
 
-                if (className.equals("") || content.equals("")) {
-                    JOptionPane.showMessageDialog(null, "请设置班级名称和学生列表信息", "提示", JOptionPane.INFORMATION_MESSAGE);
+                if (className.equals("") || className.equals("请输入或选择要编辑的班级名称")) {
+                    JOptionPane.showMessageDialog(null, "请输入班级名称", "提示", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
+
+                if (content.equals("")) {
+                    JOptionPane.showMessageDialog(null, "请设置学员列表信息", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+
+                content = content.replace("\r\n", "\n").replace("\n", "\r\n");
 
                 String path = "config/" + className + ".txt";
 
@@ -113,9 +120,10 @@ public class ConfigStudentForm {
 
     private void loadClassList() {
         Config.init();
-        this.cboClassName.removeAllItems();
 
+        this.cboClassName.removeAllItems();
         this.cboClassName.addItem("请输入或选择要编辑的班级名称");
+
         if (Config.classNameList != null) {
             for (String name : Config.classNameList) {
                 this.cboClassName.addItem(name);

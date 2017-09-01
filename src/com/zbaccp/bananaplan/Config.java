@@ -24,14 +24,14 @@ public class Config {
      * 初始化班级
      */
     public static void init() {
+        classNameList = new ArrayList<String>();
         File dir = new File("config");
+
         if (dir.exists() && dir.isDirectory()) {
             File[] files = dir.listFiles();
 
             int length = files.length;
             if (length > 0) {
-                classNameList = new ArrayList<String>();
-
                 for (int i = 0; i < length; i++) {
                     File file = files[i];
 
@@ -49,6 +49,10 @@ public class Config {
     public static void initStudentList(int index) {
         classIndex = index;
         classStuList = new ArrayList<Student>();
+
+        if (classIndex == -1) {
+            return;
+        }
 
         String path = "config/" + classNameList.get(index) + ".txt";
         FileUtil fileUtil = new FileUtil(path);

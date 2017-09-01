@@ -20,6 +20,8 @@ public class MainForm {
     public static Application app;
     public static JFrame frame;
 
+    private boolean showNoNewVersionTip;
+
     private JPanel panelMain;
     private JPanel panelMenu;
     private JPanel contentPanel;
@@ -69,17 +71,17 @@ public class MainForm {
         menuItemUpgrade.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                checkUpgrade();
+                checkUpgrade(true);
             }
         });
         menuItemAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "JadeGuiTools 0.1\nCreated by bananaplan. Open source code on\nhttps://github.com/bananaplan/JadeCmdTools/tree/gui", "关于", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "JadeGuiTools " + Config.VERSION + "\nCreated by bananaplan. Open source code on\nhttps://github.com/bananaplan/JadeCmdTools/tree/gui", "关于", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
-        checkUpgrade();
+        checkUpgrade(false);
     }
 
     public static void setMenuEnabled(boolean isEnabled) {
@@ -87,8 +89,9 @@ public class MainForm {
 //        MainForm.instance.menuItemPractice.setEnabled(isEnabled);
     }
 
-    private void checkUpgrade() {
+    private void checkUpgrade(boolean showNoNewVersionTip) {
         System.out.println("check upgrade ...");
+        this.showNoNewVersionTip = showNoNewVersionTip;
 
         String logUrl = "https://raw.githubusercontent.com/bananaplan/JadeCmdTools/gui/Changelog.txt";
         String logFileName = "Changelog.txt";
@@ -170,8 +173,6 @@ public class MainForm {
                     if (JOptionPane.showConfirmDialog(null, "发现新版本, Version: " + version + ", 是否下载更新？", "确认",
                             JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
 
-                        JOptionPane.showMessageDialog(null, "正在下载更新，请稍后...", "提示", JOptionPane.INFORMATION_MESSAGE);
-
                         String jarUrl = fileUtil.readLine();
                         final String jarFileName = jarUrl.substring(jarUrl.lastIndexOf('/') + 1);
 
@@ -191,6 +192,10 @@ public class MainForm {
                     }
                 } else {
                     System.out.println("no new version.");
+
+                    if (showNoNewVersionTip) {
+                        JOptionPane.showMessageDialog(null, "当前已是最新版本", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
