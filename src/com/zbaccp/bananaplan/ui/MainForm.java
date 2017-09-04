@@ -34,7 +34,7 @@ public class MainForm {
     private JMenuItem menuItemHow;
     private JMenuItem menuItemUpgrade;
     private JMenuItem menuItemAbout;
-    private JMenuItem menuItemPractice;
+    private JMenuItem menuItemCompetition;
     private JMenuItem menuItemHomework;
     private JMenuItem menuItemExtract;
     private JMenuItem menuItemChangeClass;
@@ -86,7 +86,7 @@ public class MainForm {
 
     public static void setMenuEnabled(boolean isEnabled) {
         MainForm.instance.menuItemLucky.setEnabled(isEnabled);
-//        MainForm.instance.menuItemPractice.setEnabled(isEnabled);
+//        MainForm.instance.menuItemCompetition.setEnabled(isEnabled);
     }
 
     private void checkUpgrade(boolean showNoNewVersionTip) {

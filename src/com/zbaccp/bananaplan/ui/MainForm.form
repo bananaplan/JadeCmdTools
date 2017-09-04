@@ -39,7 +39,7 @@
                       <text value="幸运抽奖"/>
                     </properties>
                   </component>
-                  <component id="c1669" class="javax.swing.JMenuItem" binding="menuItemPractice">
+                  <component id="c1669" class="javax.swing.JMenuItem" binding="menuItemCompetition">
                     <constraints/>
                     <properties>
                       <enabled value="false"/>
