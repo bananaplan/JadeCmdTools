@@ -253,7 +253,7 @@ public class Application {
         } while (!title.equals("n"));
     }
 
-    private boolean saveProgRace(String title, Date start, Student stu, int[] idArray) {
+    public boolean saveProgRace(String title, Date start, Student stu, int[] idArray) {
         if (stu == null) {
             return false;
         }

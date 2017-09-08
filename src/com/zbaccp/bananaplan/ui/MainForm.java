@@ -6,10 +6,13 @@ import com.zbaccp.bananaplan.handler.FileHandler;
 import com.zbaccp.bananaplan.util.FileUtil;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -50,6 +53,12 @@ public class MainForm {
                 LuckyForm.show();
             }
         });
+        menuItemCompetition.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CompetitionForm.show();
+            }
+        });
         menuItemConfigClass.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,10 +83,30 @@ public class MainForm {
                 checkUpgrade(true);
             }
         });
+        menuItemHow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    URI uri = new URI("https://github.com/bananaplan/JadeCmdTools/tree/gui");
+                    Desktop.getDesktop().browse(uri);
+                } catch (URISyntaxException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         menuItemAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "JadeGuiTools " + Config.VERSION + "\nCreated by bananaplan. Open source code on\nhttps://github.com/bananaplan/JadeCmdTools/tree/gui", "关于", JOptionPane.INFORMATION_MESSAGE);
+                ImageIcon icon = new ImageIcon(MainForm.this.getClass().getResource("/images/PayMe.png"));
+
+                StringBuffer sb = new StringBuffer();
+                sb.append("JadeGuiTools " + Config.VERSION + "\n");
+                sb.append("Created by bananaplan. Open source code on\nhttps://github.com/bananaplan/JadeCmdTools/tree/gui\n");
+                sb.append("微信扫码，打赏一下，是我们前进的动力 @_@");
+
+                JOptionPane.showMessageDialog(null, sb, "关于", JOptionPane.INFORMATION_MESSAGE, icon);
             }
         });
 
@@ -86,7 +115,7 @@ public class MainForm {
 
     public static void setMenuEnabled(boolean isEnabled) {
         MainForm.instance.menuItemLucky.setEnabled(isEnabled);
-//        MainForm.instance.menuItemCompetition.setEnabled(isEnabled);
+        MainForm.instance.menuItemCompetition.setEnabled(isEnabled);
     }
 
     private void checkUpgrade(boolean showNoNewVersionTip) {

@@ -257,7 +257,7 @@ public class HomeworkForm {
 
         frame = new JFrame("作业分析");
         frame.setContentPane(new HomeworkForm().panelMain);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(720, 560);
         frame.setLocationRelativeTo(MainForm.frame);
         frame.setVisible(true);

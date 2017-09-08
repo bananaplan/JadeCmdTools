@@ -7,7 +7,7 @@ import com.zbaccp.bananaplan.bean.Student;
 import com.zbaccp.bananaplan.util.FileUtil;
 
 public class Config {
-    public final static double VERSION = 0.1;
+    public final static double VERSION = 1.0;
 
     public final static int CLASS_OTHER = -1;
 

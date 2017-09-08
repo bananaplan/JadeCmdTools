@@ -42,7 +42,7 @@
                   <component id="c1669" class="javax.swing.JMenuItem" binding="menuItemCompetition">
                     <constraints/>
                     <properties>
-                      <enabled value="false"/>
+                      <enabled value="true"/>
                       <text value="编码竞赛"/>
                     </properties>
                   </component>
@@ -93,7 +93,7 @@
                   <component id="7e761" class="javax.swing.JMenuItem" binding="menuItemHow">
                     <constraints/>
                     <properties>
-                      <enabled value="false"/>
+                      <enabled value="true"/>
                       <text value="如何使用"/>
                     </properties>
                   </component>
