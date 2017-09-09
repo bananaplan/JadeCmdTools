@@ -48,9 +48,9 @@ public class SimilarityAnalysis {
                 File file2 = list2.get(j);
 
                 int similar = 0;
-                if (file1.getName().equals(file2.getName())) {
-                    similar += 5;
-                }
+//                if (file1.getName().equals(file2.getName())) {
+//                    similar += 5;
+//                }
 
                 if (file1.lastModified() == file2.lastModified()) {
                     similar += 100;

@@ -768,7 +768,7 @@ public class Application {
 
             if (file.isDirectory()) {
                 if (Config.classIndex != Config.CLASS_OTHER) {
-                    Student stu = Student.getStudent(Config.classStuList, file.getName(), 0);
+                    Student stu = Student.getStudent(Config.classStuList, file.getName(), 2);
                     if (stu != null) {
                         myMaster = stu.name;
                     }
