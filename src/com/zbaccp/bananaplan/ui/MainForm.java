@@ -86,13 +86,19 @@ public class MainForm {
         menuItemHow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String url = "https://github.com/bananaplan/JadeCmdTools/tree/gui";
+
                 try {
-                    URI uri = new URI("https://github.com/bananaplan/JadeCmdTools/tree/gui");
+                    URI uri = new URI(url);
                     Desktop.getDesktop().browse(uri);
                 } catch (URISyntaxException e1) {
                     e1.printStackTrace();
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    try {
+                        Runtime.getRuntime().exec("cmd /c start iexplore " + url);
+                    } catch (IOException e2) {
+                        e2.printStackTrace();
+                    }
                 }
             }
         });
@@ -162,13 +168,17 @@ public class MainForm {
                 handler.callback(null, null, new File(filename));
 
             } catch (MalformedURLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
+                e.printStackTrace();
+//                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
             } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
+                e.printStackTrace();
+//                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
+                e.printStackTrace();
+//                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
+                e.printStackTrace();
+//                JOptionPane.showMessageDialog(null, e.getMessage(), "下载失败", JOptionPane.INFORMATION_MESSAGE);
             } finally {
                 if (in != null) {
                     try {

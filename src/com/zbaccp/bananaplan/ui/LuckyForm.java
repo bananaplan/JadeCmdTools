@@ -81,6 +81,17 @@ public class LuckyForm {
                 btnLucky.setEnabled(true);
             }
         });
+
+        frame.getRootPane().setDefaultButton(btnLucky);
+    }
+
+    public static void reset() {
+        Student.list = null;
+
+        if (frame != null) {
+            frame.dispose();
+            frame = null;
+        }
     }
 
     public static void show() {

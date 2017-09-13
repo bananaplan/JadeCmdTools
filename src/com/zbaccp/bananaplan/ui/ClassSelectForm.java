@@ -32,6 +32,7 @@ public class ClassSelectForm {
                         MainForm.setMenuEnabled(false);
                     } else {
                         Config.initStudentList(index);
+                        LuckyForm.reset();
                         MainForm.setMenuEnabled(true);
                     }
 
