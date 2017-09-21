@@ -32,10 +32,21 @@ public class FileUtil {
         InputStreamReader isr = null;
 
         try {
+            String encoding = detectEcoding(file);
+            System.out.println(encoding);
+
             is = new FileInputStream(file);
-            isr = new InputStreamReader(is);
+
+            if (encoding == null) {
+                isr = new InputStreamReader(is);
+            } else {
+                isr = new InputStreamReader(is, encoding);
+            }
+
             reader = new BufferedReader(isr);
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
@@ -281,7 +292,11 @@ public class FileUtil {
      * @param path 文件路径
      * @return 字符编码
      */
-    public static String detectEcoding(String path) {
+    private static String detectEcoding(String path) {
+        return detectEcoding(new File(path));
+    }
+
+    private static String detectEcoding(File file) {
         // Create the proxy:
         CodepageDetectorProxy detector = CodepageDetectorProxy.getInstance(); // A singleton.
 
@@ -294,8 +309,6 @@ public class FileUtil {
         // unsuccessful:
         detector.add(JChardetFacade.getInstance()); // Another singleton.
         detector.add(ASCIIDetector.getInstance()); // Fallback, see javadoc.
-
-        File file = new File(path);
 
         // Work with the configured proxy:
         java.nio.charset.Charset charset = null;

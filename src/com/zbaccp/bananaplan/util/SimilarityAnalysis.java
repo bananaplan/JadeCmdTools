@@ -53,7 +53,7 @@ public class SimilarityAnalysis {
 //                }
 
                 if (file1.lastModified() == file2.lastModified()) {
-                    similar += 100;
+                    similar += 105;
                 }
 
                 if (similar < 100 && !Config.isVideoFile(file2.getName())) {

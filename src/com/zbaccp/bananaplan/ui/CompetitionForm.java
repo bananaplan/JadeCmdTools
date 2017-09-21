@@ -218,7 +218,6 @@ public class CompetitionForm {
         frame = new JFrame("编码竞赛");
         frame.setContentPane(new CompetitionForm().panelMain);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setResizable(false);
         frame.setSize(720, 560);
         frame.setLocationRelativeTo(MainForm.frame);
         frame.setVisible(true);
